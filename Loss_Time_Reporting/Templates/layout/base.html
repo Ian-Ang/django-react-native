@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    {% include "layout/head-meta.html" %}
+
+    <title>Utility LTR</title>
+
+    <!-- Custom fonts & Custom styles for this template-->
+    {% include "layout/head-assets.html" %}
+
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+      <!-- Sidebar -->
+      {% include "layout/sidebar.html" %}
+      <!-- End of Sidebar -->
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+          <!-- Topbar -->
+          {% include "layout/topbar.html" %}
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+            {% block content %}
+
+            {% endblock %}
+          <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        {% include "layout/footer.html" %}
+        <!-- End of Footer -->
+
+      </div>
+      <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    {% include "layout/logout-modal.html" %}
+
+    <!-- javascript -->
+    {% include "layout/js.html" %}
+
+    {% block inline_js %}
+    {% endblock %}
+
+  </body>
+</html>
