@@ -18,6 +18,8 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from Common.views import handler404, handler500
 
+app_name = 'Loss_Time_Reporting'
+
 urlpatterns = [
     #api authenticate
     path('api-auth/', include('rest_framework.urls')),

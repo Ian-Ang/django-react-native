@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     #3rd party
     'rest_framework',
     'phone_field',
+    'simple_pagination',
     #Apps
     'Activity.apps.ActivityConfig',
     'Equipment.apps.EquipmentConfig',

@@ -103,3 +103,12 @@ class Address(models.Model):
             else:
                 address += self.get_country_display()
         return address
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
+    activation_key = models.CharField(max_length=50)
+    key_expires = models.DateTimeField()
+
+    def save(self, *args, **kwargs):
+        self.key_expires = timezone.now() + datetime.timedelta(hours=2)
+        super(Profile, self).save(*args, **kwargs)

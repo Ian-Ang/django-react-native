@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 
-def admin_site_required(functions):
+def admin_access_required(functions):
 
     def wraps(request, *args, **kwargs):
         if request.user.role =='ADMIN' or request.user.is_superuser or request.user.is_admin:
@@ -13,28 +13,28 @@ def admin_site_required(functions):
             raise PermissionDenied
     return wraps
 
-def Manager_required(functions):
+def Manager_access_required(functions):
 
     def wraps(request, *args, **kwargs):
-        if request.user.role =='STAFF' or request.user.is_staff or request.user.has_manager_access:
+        if request.user.role =='ADMIN' or request.user.is_superuser or request.user.has_manager_access:
             return functions(request, *args, **kwargs)
         else:
             raise PermissionDenied
     return wraps
 
-def Supervisor_required(functions):
+def Supervisor_access_required(functions):
 
     def wraps(request, *args, **kwargs):
-        if request.user.role =='STAFF' or request.user.is_staff or request.user.has_supervisor_access:
+        if request.user.role =='ADMIN' or request.user.is_superuser or request.user.has_supervisor_access:
             return functions(request, *args, **kwargs)
         else:
             raise PermissionDenied
     return wraps
 
-def Staff_required(functions):
+def Staff_access_required(functions):
 
     def wraps(request, *args, **kwargs):
-        if request.user.role =='STAFF' or request.user.is_staff or request.user.has_staff_access:
+        if request.user.role =='ADMIN' or request.user.is_superuser or request.user.has_staff_access:
             return functions(request, *args, **kwargs)
         else:
             raise PermissionDenied
@@ -57,7 +57,7 @@ class ManagerAccessRequiredMixin(AccessMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         self.raise_exception = True
-        if request.user.role == 'STAFF' or request.user.is_staff or request.user.has_manager_access:
+        if request.user.role == 'ADMIN' or request.user.is_superuser or request.user.has_manager_access:
             return super(ManagerAccessRequiredMixin, self).dispatch(request, *args, *kwargs)
         else:
             return self.handle_no_permission()
@@ -68,7 +68,7 @@ class SupervisorAccessRequiredMixin(AccessMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         self.raise_exception = True
-        if request.user.role == 'STAFF' or request.user.is_staff or request.user.has_manager_access:
+        if request.user.role == 'ADMIN' or request.user.is_superuser or request.user.has_manager_access:
             return super(ManagerAccessRequiredMixin, self).dispatch(request, *args, *kwargs)
         else:
             return self.handle_no_permission()
@@ -79,7 +79,7 @@ class StaffAccessRequiredMixin(AccessMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         self.raise_exception = True
-        if request.user.role == 'STAFF' or request.user.is_staff or request.user.has_manager_access:
+        if request.user.role == 'ADMIN' or request.user.is_superuser or request.user.has_manager_access:
             return super(ManagerAccessRequiredMixin, self).dispatch(request, *args, *kwargs)
         else:
             return self.handle_no_permission()

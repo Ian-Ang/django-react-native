@@ -2,10 +2,8 @@ import pytz
 from django.utils.translation import ugettext_lazy as _
 
 ROLES = (
-    ('ADMIN','Admin'),
-    ('MANAGER','Manager'),
-    ('SUPERVISOR','Supervisor'),
-    ('STAFF','Staff'),
+    ('ADMIN','ADMIN'),
+    ('USER','USER'),
 )
 
 COUNTRIES = (
