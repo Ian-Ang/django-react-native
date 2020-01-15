@@ -26,8 +26,13 @@ urlpatterns = [
 
     #Path for Web Admin
     path('admin/', admin.site.urls),
-    path('', include('Common.urls')),
+    path('', include('Common.urls', namespace="Common")),
     path('', include('django.contrib.auth.urls')),
+    path('supervisor/', include('Supervisor.urls', namespace="Supervisor")),
+    path('staff/', include('Staff.urls', namespace='Staff')),
+    path('activity/', include('Activity.urls', namespace="Activity")),
+    path('equipment/', include('Equipment.urls', namespace="Equipment")),
+    path('teams/', include('Teams.urls', namespace="Teams")),
 
     # Path REST API for Mobile React Native
     path('api_user/', include('Common.api.urls')),

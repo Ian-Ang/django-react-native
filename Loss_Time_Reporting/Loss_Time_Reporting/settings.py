@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'Activity.apps.ActivityConfig',
     'Equipment.apps.EquipmentConfig',
     'Common.apps.CommonConfig',
+    'Teams.apps.TeamsConfig'
 
 ]
 
