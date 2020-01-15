@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from Common.models import Address, User
-from Common.API.serializers import AddressSerializer, UserSerializer
+from Common.api.serializers import AddressSerializer, UserSerializer
 
 class UsertList(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -70,7 +70,7 @@ class AddressList(APIView):
 class AddressDetail(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def get_object(self, pk):
         try:
             return Address.objects.get(pk=pk)

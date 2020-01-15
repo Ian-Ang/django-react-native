@@ -30,9 +30,9 @@ urlpatterns = [
     path('', include('django.contrib.auth.urls')),
 
     # Path REST API for Mobile React Native
-    path('api_user/', include('Common.API.urls')),
-    path('api_equipment/', include('Equipment.API.urls')),
-    path('api_activity/', include('Activity.API.urls')),
+    path('api_user/', include('Common.api.urls')),
+    path('api_equipment/', include('Equipment.api.urls')),
+    path('api_activity/', include('Activity.api.urls')),
 ]
 handler404 = handler404
 handler500 = handler500

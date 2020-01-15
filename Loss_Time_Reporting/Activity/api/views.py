@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from Activity.models import Status, Activity
-from Activity.API.serializers import StatusSerializer, ActivitySerializer
+from Activity.api.serializers import StatusSerializer, ActivitySerializer
 
 class ActivitytList(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -70,7 +70,7 @@ class StatusList(APIView):
 class StatusDetail(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def get_object(self, pk):
         try:
             return Status.objects.get(pk=pk)

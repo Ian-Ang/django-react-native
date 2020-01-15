@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from Equipment.API.views import EquipmentList, EquipmentDetail, LocateList, LocateDetail
+from Equipment.api.views import EquipmentList, EquipmentDetail, LocateList, LocateDetail
 
 urlpatterns = [
     path('equipment/', EquipmentList.as_view(), name='equipment_list'),

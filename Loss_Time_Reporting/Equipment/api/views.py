@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from Equipment.models import Equipment, Locate
-from Equipment.API.serializers import EquipmentSerializer, LocateSerializer
+from Equipment.api.serializers import EquipmentSerializer, LocateSerializer
 
 class EquipmentList(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
@@ -71,7 +71,7 @@ class LocateList(APIView):
 class LocateDetail(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def get_object(self, pk):
         try:
             return Locate.objects.get(pk=pk)

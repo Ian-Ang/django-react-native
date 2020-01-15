@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
-from Common.API.views import UsertList, UserDetail, AddressList, AddressDetail
+from Common.api.views import UsertList, UserDetail, AddressList, AddressDetail
 
 urlpatterns = [
     path('user/', UsertList.as_view(), name='user_list'),

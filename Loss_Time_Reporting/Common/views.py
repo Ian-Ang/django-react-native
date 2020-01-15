@@ -106,11 +106,11 @@ class LoginView(TemplateView):
                     if user is not None:
                         login(request, user)
                         if user.has_manager_access:
-                            return HttpResponseRedirect('/')
+                            return HttpResponseRedirect('/') #return redirect('manager:dashboard')
                         elif user.has_supervisor_access:
-                            return HttpResponseRedirect('/') #return redirect('marketing:dashboard')
+                            return HttpResponseRedirect('/') #return redirect('supervisor:dashboard')
                         elif user.has_staff_access:
-                            return HttpResponseRedirect('/')
+                            return HttpResponseRedirect('/') #return redirect('staff:dashboard')
                         else :
                             return HttpResponseRedirect('/')
                     return render(request, "login.html", {
