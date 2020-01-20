@@ -1,8 +1,13 @@
 from django.contrib import admin
 from django.urls import path
+from Equipment.views import *
 
 app_name = 'Equipment'
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
+    path('', Equipment_List, name='Equipment_List'),
+    path('create/', Equipment_Create, name='Equipment_Create'),
+    path('detail/<str:equipment_id>/', Equipment_Detail, name='Equipment_Detail'),
+    path('edit/<str:equipment_id>/', Equipment_Edit, name='Equipment_Edit'),
+    path('delete/<str:equipment_id>/', Equipment_Delete, name='Equipment_Delete'),
 ]
