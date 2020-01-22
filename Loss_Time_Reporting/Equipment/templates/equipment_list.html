@@ -1,0 +1,84 @@
+{% extends "layout/base.html" %}
+{% load paginate%}
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Equipment List</h1>
+  <div>
+    <span class="d-lg-inline"><a class="btn btn-primary" href="{% url 'Equipment:Equipment_Create'%}"><i class="fa fa-plus"></i>Add New Equipment</a></span>
+    <span class="float-left">Equipment - {% if show_pageitems %}
+      {% show_pageitems %}{% else %}
+      {{ equipment|length}}{% endif %}</span>
+    <span class="filter_toggle"><a href="#" class="btn btn-primary"><i class="fas fa-filter"></i></a></span>
+  </div>
+  <div>
+
+  </div>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            {% if equipment|length > 0 %}
+            <tr class="text-center">
+              <th>ID</th>
+              <th>Location</th>
+              <th>Equipment Name</th>
+              <th>QR Code</th>
+              <th>Is Active</th>
+              <th>Actions</th>
+            </tr>
+            {% endif %}
+          </thead>
+          <!--<tfoot>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Age</th>
+              <th>Start date</th>
+              <th>Salary</th>
+            </tr>
+          </tfoot>-->
+          <tbody>
+            {% if per_page %}
+            {% paginate per_page equipment %}
+            {% else %}
+            {% paginate 10 equipment %}
+            {% endif %}
+            {% for equip in equipment %}
+            <tr class="text-center">
+              <td scope="row">{{forloop.counter}}</td>
+              <td>{{ equip.locate_id}}</td>
+              <td>{{ equip.name}}</td>
+              <td>{{ equip.qr_code}}</td>
+              <td>{{ equip.is_active}}</td>
+              <td class="actions">
+                {% if request.user == equip.created_by or request.user.role == 'ADMIN' %}
+                <a href="#" class="btn btn-info edit"><i class="fas fa-eye"></i></a>
+                <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                <a href="#" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                {% endif %}
+              </td>
+            {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% ifequal equipment|length 0  %}
+      <h6 class="text-center"> No Equipment Found</h6>
+      {% endifequal %}
+      <div class="text-center">
+        {% show_pageitems %}
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

@@ -70,6 +70,6 @@ class LocateForm(forms.ModelForm):
         self.fields['is_active'].required = True
         self.fields['description'].required = True
 
-        class Meta:
-            model = Locate
-            fields = ('name', 'is_active', 'description')
+    class Meta:
+        model = Locate
+        fields = ('name', 'is_active', 'description')

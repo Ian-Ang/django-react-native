@@ -20,7 +20,7 @@ class Locate(models.Model):
         return self.name
 
 class Equipment(models.Model):
-    id = models.CharField(max_length=7, unique=True, primary_key=True, null=False, editable=False)
+    id = models.CharField(max_length=7, unique=True, primary_key=True, null=False)
     locate_id = models.ForeignKey('Locate', on_delete=models.CASCADE)
     name = models.CharField(_("Equipment"), max_length=50, null=False)
     qr_code = models.CharField(max_length=12, unique=True, null=False)
