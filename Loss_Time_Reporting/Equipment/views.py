@@ -30,7 +30,8 @@ def Equipment_List(request):
         else:
             equipment = Equipment.objects.filter(Q(created_by=request.user)).distinct()
         today =datetime.today().date()
-        return render(request, 'equipment_list.html', {'equipment':equipment, 'today':today})
+        locate = Locate.objects.all().distinct()
+        return render(request, 'equipment_list.html', {'equipment':equipment, 'locate':locate, 'today':today})
 
     if request.method == 'POST':
         equipment = Equipment.objects.filter()

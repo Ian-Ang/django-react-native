@@ -5,20 +5,58 @@
 <div class="container-fluid">
   <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800">Equipment List</h1>
-  <div>
-    <span class="d-lg-inline"><a class="btn btn-primary" href="{% url 'Equipment:Equipment_Create'%}"><i class="fa fa-plus"></i>Add New Equipment</a></span>
-    <span class="float-left">Equipment - {% if show_pageitems %}
-      {% show_pageitems %}{% else %}
-      {{ equipment|length}}{% endif %}</span>
-    <span class="filter_toggle"><a href="#" class="btn btn-primary"><i class="fas fa-filter"></i></a></span>
+  <div class="row">
+    <div class="col-lg-12 text-right">
+      <span class="d-lg-inline"><a class="btn btn-primary" href="{% url 'Equipment:Equipment_Create'%}"><i class="fa fa-plus"></i>Add New Equipment</a></span>
+    </div>
   </div>
-  <div>
-
+  <!-- filter -->
+  <div class="card shadow mb-4 list_filter_row" style="display:none;">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Filter</h6>
+      </div>
+      <div class="card-body">
+          <form  id="docs_filter" method="POST" action="">
+              <div class="form-row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Equipment Name</label>
+                    <input type="text" class="form-control" placeholder="Equipment Name" name="name"
+                    {% if request.POST.equipment_name %} value="{{request.POST.equipment_name}}"{%endif%}/>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Location</label>
+                    <select class="form-control" id="locate_id" name="locate_id">
+                      <option value="">--location--</option>
+                      {% for each_locate in locate%}
+                      <option value="{{each_locate.name}}"{% if request.POST.locate_id %}
+                      {% ifequal each_locate.name request.POST.locate_id %}selected{% endifequal %}{% endif %}>
+                      {{each_locate.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3 text-center">
+                  <div class="form-group mt-4">
+                    <button class="btn btn-primary save" type="submit">Search</button>
+                    <a href="{% url 'Equipment:Equipment_List' %}" class="btn btn-info clear">Clear</a>
+                  </div>
+                </div>
+              </div>
+          </form>
+      </div>
   </div>
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+    <div class="card-header py-3 text-right">
+      <span class="m-0 font-weight-bold text-primary float-left ">Equipment - {% if show_pageitems %}
+        {% show_pageitems %}{% else %}
+        {{ equipment|length}}{% endif %}</span>
+      <span class="filter_toggle">
+        <a href="#" class="btn btn-primary"><i class="fas fa-filter"></i></a>
+      </span>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -28,7 +66,7 @@
             <tr class="text-center">
               <th>ID</th>
               <th>Location</th>
-              <th>Equipment Name</th>
+              <th>Equipment</th>
               <th>QR Code</th>
               <th>Is Active</th>
               <th>Actions</th>
@@ -37,12 +75,12 @@
           </thead>
           <!--<tfoot>
             <tr>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Office</th>
-              <th>Age</th>
-              <th>Start date</th>
-              <th>Salary</th>
+              <th>ID</th>
+              <th>Location</th>
+              <th>Equipment</th>
+              <th>QR Code</th>
+              <th>Is Active</th>
+              <th>Actions</th>
             </tr>
           </tfoot>-->
           <tbody>
@@ -52,13 +90,13 @@
             {% paginate 10 equipment %}
             {% endif %}
             {% for equip in equipment %}
-            <tr class="text-center">
-              <td scope="row">{{forloop.counter}}</td>
+            <tr>
+              <td class="text-center" scope="row">{{forloop.counter}}</td>
               <td>{{ equip.locate_id}}</td>
               <td>{{ equip.name}}</td>
               <td>{{ equip.qr_code}}</td>
               <td>{{ equip.is_active}}</td>
-              <td class="actions">
+              <td class="actions text-center">
                 {% if request.user == equip.created_by or request.user.role == 'ADMIN' %}
                 <a href="#" class="btn btn-info edit"><i class="fas fa-eye"></i></a>
                 <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
@@ -82,3 +120,21 @@
 </div>
 <!-- /.container-fluid -->
 {% endblock content %}
+
+{% block inline_js %}
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>-->
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('.assigned_users').select2();
+      $(".filter_toggle").click(function () {
+        $(".list_filter_row").toggle();
+      });
+    });
+
+    search = "{{search}}"
+
+    if (search == 'True') {
+      $(".list_filter_row").show();
+    }
+</script>
+{% endblock inline_js %}

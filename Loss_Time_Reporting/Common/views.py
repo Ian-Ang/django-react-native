@@ -39,13 +39,16 @@ class HomeView(LoginRequiredMixin, TemplateView):
         context = super(HomeView, self).get_context_data(**kwargs)
         activity = Activity.objects.all()
         equipment = Equipment.objects.all()
+        user = User.objects.all()
         if self.request.user.role == "ADMIN" or self.request.user.is_superuser:
-            pass
+            users = self.request.user.username
         else:
             activity = Activity.filter(Q(create_by=self.request.user.id))
             equipment = Equipment.filter(Q(create_by=self.request.user.id))
+            user = self.request.user.username
         context["activitys"] = activity
         context["equipments"] = equipment
+        context["users"] = user
         return context
 
 
