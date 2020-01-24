@@ -17,11 +17,12 @@
       </div>
       <div class="card-body">
           <form  id="docs_filter" method="POST" action="">
+            {% csrf_token %}
               <div class="form-row">
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Equipment Name</label>
-                    <input type="text" class="form-control" placeholder="Equipment Name" name="name"
+                    <input type="text" class="form-control" placeholder="Equipment Name" name="equipment_name"
                     {% if request.POST.equipment_name %} value="{{request.POST.equipment_name}}"{%endif%}/>
                   </div>
                 </div>
@@ -31,8 +32,8 @@
                     <select class="form-control" id="locate_id" name="locate_id">
                       <option value="">--location--</option>
                       {% for each_locate in locate%}
-                      <option value="{{each_locate.name}}"{% if request.POST.locate_id %}
-                      {% ifequal each_locate.name request.POST.locate_id %}selected{% endifequal %}{% endif %}>
+                      <option  value="{{each_locate.id}}" {% if request.POST.locate_id %}
+                      {% ifequal each_locate.id request.POST.locate_id %}selected{% endifequal %}{% endif %}>
                       {{each_locate.name}}</option>
                       {% endfor %}
                     </select>
@@ -98,9 +99,9 @@
               <td>{{ equip.is_active}}</td>
               <td class="actions text-center">
                 {% if request.user == equip.created_by or request.user.role == 'ADMIN' %}
-                <a href="#" class="btn btn-info edit"><i class="fas fa-eye"></i></a>
-                <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
-                <a href="#" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                <a href="{% url 'Equipment:Equipment_Detail' equip.id %}" class="btn btn-info edit"><i class="fas fa-eye"></i></a>
+                <a href="{% url 'Equipment:Equipment_Edit' equip.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                <a href="{% url 'Equipment:Equipment_Delete' equip.id %}" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
                 {% endif %}
               </td>
             {% endfor %}
@@ -112,7 +113,7 @@
       <h6 class="text-center"> No Equipment Found</h6>
       {% endifequal %}
       <div class="text-center">
-        {% show_pageitems %}
+        {% show_pages %}
       </div>
     </div>
   </div>
@@ -136,5 +137,19 @@
     if (search == 'True') {
       $(".list_filter_row").show();
     }
+
+    $('.remove_document').click(function(e){
+      e.preventDefault()
+      url = $(this).attr('href')
+      if (!confirm('Are you sure you want to delete.?'))
+        return;
+      window.location = $(this).attr('href')
+    })
+
+    $("a[rel='page']").click(function(e) {
+      e.preventDefault()
+      $('#docs_filter').attr("action", $(this).attr("href"))
+      $('#docs_filter').submit()
+    })
 </script>
 {% endblock inline_js %}

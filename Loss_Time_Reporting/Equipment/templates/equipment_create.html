@@ -17,43 +17,39 @@
       </div>
       <div class="card-body">
       <form id="formid" action="" method="POST" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="form-group form-row">
           <label for="name" class="col-4 col-form-label">Equipment</label>
           <div class="col-8">
-            <input id="name" name="name" placeholder="Name " type="text" required="required" class="form-control">
+            <!--<input id="name" name="name" placeholder="Name " type="text" required="required" class="form-control">-->
+            {{ form.name}}
           </div>
         </div>
         <div class="form-group form-row">
           <label for="locate" class="col-4 col-form-label">Location</label>
             <div class="col-8">
-              <input id="locate_id" name="locate" placeholder="locate" type="text" required="required" class="form-control">
+              <!--<input id="locate_id" name="locate" placeholder="locate" type="text" required="required" class="form-control">-->
+              {{ form.locate_id}}
             </div>
         </div>
         <div class="form-group form-row">
           <label for="qr_code" class="col-4 col-form-label">QR Code</label>
             <div class="col-8">
-              <input id="qr_code" name="locate" placeholder="qr code" type="text" required="required" class="form-control">
+              <!--<input id="qr_code" name="locate" placeholder="qr code" type="text" required="required" class="form-control">-->
+              {{ form.qr_code }}
             </div>
         </div>
         <div class="form-group form-row">
-          <label class="col-4 col-form-label">Is Active</label>
-            <div class="col-8">
-              <label class="custom-radio custom-control">
-                <input name="is_active" type="radio" class="custom-control-input" value="True">
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-label">Active</span>
-              </label>
-              <label class="custom-radio custom-control">
-                <input name="is_active" type="radio" class="custom-control-input" value="False">
-                <span class="custom-control-indicator"></span>
-                <span class="custom-control-label">Deactive</span>
-              </label>
+          <label for="is_active" class="col-4 col-form-label">Is Active</label>
+            <div>
+              {{ form.is_active }}
             </div>
         </div>
         <div class="form-group form-row">
           <label for="description" class="col-4 col-form-label">Description</label>
           <div class="col-8">
-            <textarea id="description" name="description" cols="40" rows="5" class="form-control"></textarea>
+            <!--<textarea id="description" name="description" cols="40" rows="5" class="form-control"></textarea>-->
+            {{ form.description}}
           </div>
         </div>
         <div class="form-group form-row">

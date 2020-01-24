@@ -43,7 +43,7 @@ def Equipment_List(request):
         if request.POST.get('locate_id', None):
             equipment = equipment.filter(locate_id=request.POST.get('locate_id'))
         if request.POST.get('equipment_name', None):
-            equipment = equipment.filter(name__incotains=request.POST.get('equipment_name'))
+            equipment = equipment.filter(name__icontains=request.POST.get('equipment_name'))
         if request.POST.get('qr_code', None):
             equipment = equipment.filter(qr_code=request.POST.get('qr_code'))
         if request.POST.get('is_active', None):
@@ -114,23 +114,23 @@ def Equipment_Edit(request, equipment_id):
     if not (request.user.role == 'ADMIN' or request.user.is_superuser or equipment_obj.created_by == request_user):
         raise PermissionDenied
 
-    if request.methos == 'GET':
+    if request.method == 'GET':
         if request.user.role == 'ADMIN' or request.user.is_superuser:
-            users = User.Objects.filter(is_active=True).order_by('username')
+            users = User.objects.filter(is_active=True).order_by('username')
         else:
             users = User.objects.filter(role='ADMIN').order_by('username')
         form = EquipmentForm(instance=equipment_obj, request_user=request.user)
-        return render(request, 'equipmet_create.html', {'form':form, 'equipment_obj':equipment_obj, 'users':users})
+        return render(request, 'equipment_create.html', {'form':form, 'equipment_obj':equipment_obj, 'users':users})
 
     if request.method == 'POST':
         form = EquipmentForm(request.POST, instance=equipment_obj, request_user=request.user)
         if form.is_valid():
             equipment = form.save(commit=False)
             equipment.save()
-            form.save_m2m()
+            #form.save_m2m()
 
-            if request.POST.getlist('teams', []):
-                user_ids = Teams.objects.filter(id__in=request.POST.getlist('teams')).values_list('users', flat=True)
+            #if request.POST.getlist('teams', []):
+                #user_ids = Teams.objects.filter(id__in=request.POST.getlist('teams')).values_list('users', flat=True)
                 #assigned_to_user_ids = Equipment.assigned_to.all().values_list('id', flat=True)
                 #for user_id in user_ids:
                 #    if user_id not in assigned_to_user_ids:
@@ -138,10 +138,11 @@ def Equipment_Edit(request, equipment_id):
 
             #kwargs = {'domain': request.get_host(), 'protocol': request.scheme}
             #send_email.delay(equipment.id, **kwargs)
-            success_url = reverse('Equipment:Equipment_List')
-            if request.POST.get('from_Locate_id'):
-                success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
-            return JsonResponse({'error': False, 'success_url':success_url})
+            #success_url = reverse('Equipment:Equipment_List')
+            #if request.POST.get('from_Locate_id'):
+                #success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
+            #return JsonResponse({'error': False, 'success_url':success_url})
+            return redirect('/equipment/')
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -156,9 +157,9 @@ def Equipment_Delete(request, equipment_id):
     if request.method == 'GET':
         equipment_obj.delete()
 
-        if request.GET.get('view_locate', None):
-            return redirect(reverse('Equipment:view_locate', args=(request.GET.get('view_locate'),)))
-        return redirect('equipment_list.html')
+        #if request.GET.get('view_locate', None):
+        #    return redirect(reverse('Equipment:view_locate', args=(request.GET.get('view_locate'),)))
+        return redirect('/equipment/')
 
 """========================================================="""
 
