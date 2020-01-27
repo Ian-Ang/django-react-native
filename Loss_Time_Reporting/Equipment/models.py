@@ -7,7 +7,15 @@ from Common.models import User
 
 # Create your models here.
 class Locate(models.Model):
-    id = models.CharField(max_length=100, unique=True, primary_key=True, null=False)
+    def ids():
+        no = Equipment.objects.count()
+        if no == None:
+            return 1
+        else:
+            return no + 1
+
+    no = models.IntegerField(_('Code'), default=ids, unique=True, editable=False)
+    id = models.CharField(max_length=30, unique=True, primary_key=True, null=False, editable=False)
     name = models.CharField(max_length=50, null=False)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True, max_length=255)
@@ -19,8 +27,23 @@ class Locate(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, **kwargs):
+        if not self.id:
+            self.id = "{}{:05d}".format('LCT', self.no)
+        super().save(*kwargs)
+
+
 class Equipment(models.Model):
-    id = models.CharField(max_length=7, unique=True, primary_key=True, null=False)
+
+    def ids():
+        no = Equipment.objects.count()
+        if no == None:
+            return 1
+        else:
+            return no + 1
+
+    no = models.IntegerField(_('Code'), default=ids, unique=True, editable=False)
+    id = models.CharField(max_length=30, unique=True, primary_key=True, null=False, editable=False)
     locate_id = models.ForeignKey('Locate', on_delete=models.CASCADE)
     name = models.CharField(_("Equipment"), max_length=50, null=False)
     qr_code = models.CharField(max_length=12, unique=True, null=False)
@@ -37,3 +60,8 @@ class Equipment(models.Model):
     @property
     def created_on_arrow(self):
         return arrow.get(self.created_on).humanize()
+
+    def save(self, **kwargs):
+        if not self.id:
+            self.id = "{}{:08d}".format('EQP', self.no)
+        super().save(*kwargs)

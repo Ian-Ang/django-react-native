@@ -72,8 +72,8 @@ def Equipment_Create(request):
             equipment.created_by = request.user
             equipment.save()
 
-            if request.POST.getlist('teams', []):
-                user_ids = Teams.objects.filter(id__in=request.POST.getlist('teams')).values_list('users', flat=True)
+            #if request.POST.getlist('teams', []):
+                #user_ids = Teams.objects.filter(id__in=request.POST.getlist('teams')).values_list('users', flat=True)
                 #assigned_to_user_ids = Equipment.assigned_to.all().values_list('id', flat=True)
                 #for user_id in user_ids:
                 #    if user_id not in assigned_to_user_ids:
@@ -81,10 +81,11 @@ def Equipment_Create(request):
 
             #kwargs = {'domain': request.get_host(), 'protocol': request.scheme}
             #send_email.delay(equipment.id, **kwargs)
-            success_url = reverse('Equipment:Equipment_List')
-            if request.POST.get('from_Locate_id'):
-                success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
-            return JsonResponse({'error': False, 'success_url':success_url})
+            #success_url = reverse('Equipment:Equipment_List')
+            #if request.POST.get('from_Locate_id'):
+                #success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
+            #return JsonResponse({'error': False, 'success_url':success_url})
+            return redirect('Equipment:Equipment_List')
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -126,6 +127,7 @@ def Equipment_Edit(request, equipment_id):
         form = EquipmentForm(request.POST, instance=equipment_obj, request_user=request.user)
         if form.is_valid():
             equipment = form.save(commit=False)
+            equipment.updated_by = request.user
             equipment.save()
             #form.save_m2m()
 
@@ -142,7 +144,7 @@ def Equipment_Edit(request, equipment_id):
             #if request.POST.get('from_Locate_id'):
                 #success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
             #return JsonResponse({'error': False, 'success_url':success_url})
-            return redirect('/equipment/')
+            return redirect('Equipment:Equipment_List')
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -159,7 +161,7 @@ def Equipment_Delete(request, equipment_id):
 
         #if request.GET.get('view_locate', None):
         #    return redirect(reverse('Equipment:view_locate', args=(request.GET.get('view_locate'),)))
-        return redirect('/equipment/')
+        return redirect('Equipment:Equipment_List')
 
 """========================================================="""
 
@@ -183,6 +185,7 @@ def Locate_List(request):
             locate = locate
         else:
             locate = Locate.objects.filter(created_by=request.user)
+
 
         if request.POST.get('name', None):
             locate = locate.filter(name=request.POST.get('name'))
@@ -208,6 +211,7 @@ def Locate_Create(request):
     if request.method == 'POST':
         form = LocateForm(request.POST, request_user=request.user)
         if form.is_valid():
+            #locate.id =
             locate = form.save(commit=False)
             locate.created_by = request.user
             locate.save()
@@ -221,18 +225,20 @@ def Locate_Create(request):
 
             #kwargs = {'domain': request.get_host(), 'protocol': request.scheme}
             #send_email.delay(equipment.id, **kwargs)
-            success_url = reverse('Equipment:Locate_List')
+            #success_url = reverse('Equipment:Locate_List')
             #if request.POST.get('from_Locate_id'):
             #    success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
-            return JsonResponse({'error': False, 'success_url':success_url})
+            #return JsonResponse({'error': False, 'success_url':success_url})
+            return redirect('Equipment:Locate_List')
         else:
-            return JsonResponse({'error':True, 'errors': form.errors})
-"""
+            return JsonResponse({'errors': form.errors})
+
+
 @login_required
 @Supervisor_access_required
 @Staff_access_required
-def Equipment_Detail(request, equipment_id):
-    equipment = get_object_or_404(Equipment, pk=equipment_id)
+def Locate_Detail(request, locate_id):
+    locate = get_object_or_404(Locate, pk=locate_id)
 
     if not (request.user.role == 'ADMIN' or request.user.is_superuser or equipment.created_by == request.user):
         raise PermissionDenied
@@ -240,37 +246,39 @@ def Equipment_Detail(request, equipment_id):
     if request.method == 'GET':
         if request.user.is_superuser or request.user.role == 'ADMIN':
             users_mention = list(User.objects.filter(is_active=True).values('username'))
-        elif request.user != equipment.created_by:
-            users_mention = [{'username': equipment.created_by.username}]
+        elif request.user != locate.created_by:
+            users_mention = [{'username': locate.created_by.username}]
         else:
-            users_mention = list(equipment.created_by.all().values('username'))
-        return render(request, 'equipment_detail.html', {'equipment': equipment, 'users_mention': users_mention})
+            users_mention = list(locate.created_by.all().values('username'))
+        return render(request, 'locate_detail.html', {'locate': locate, 'users_mention': users_mention})
+
 
 @login_required
 @Staff_access_required
-def Equipment_Edit(request, equipment_id):
-    equipment_obj = get_object_or_404(Equipment, pk=equipment_id)
+def Locate_Edit(request, locate_id):
+    locate_obj = get_object_or_404(Locate, pk=locate_id)
 
     if not (request.user.role == 'ADMIN' or request.user.is_superuser or equipment_obj.created_by == request_user):
         raise PermissionDenied
 
-    if request.methos == 'GET':
+    if request.method == 'GET':
         if request.user.role == 'ADMIN' or request.user.is_superuser:
-            users = User.Objects.filter(is_active=True).order_by('username')
+            users = User.objects.filter(is_active=True).order_by('username')
         else:
             users = User.objects.filter(role='ADMIN').order_by('username')
-        form = EquipmentForm(instance=equipment_obj, request_user=request.user)
-        return render(request, 'equipmet_create.html', {'form':form, 'equipment_obj':equipment_obj, 'users':users})
+        form = LocateForm(instance=locate_obj, request_user=request.user)
+        return render(request, 'locate_create.html', {'form':form, 'locate_obj':locate_obj, 'users':users})
 
     if request.method == 'POST':
-        form = EquipmentForm(request.POST, instance=equipment_obj, request_user=request.user)
+        form = LocateForm(request.POST, instance=locate_obj, request_user=request.user)
         if form.is_valid():
-            equipment = form.save(commit=False)
-            equipment.save()
-            form.save_m2m()
+            locate = form.save(commit=False)
+            locate.updated_by = request.user
+            locate.save()
+            #form.save_m2m()
 
-            if request.POST.getlist('teams', []):
-                user_ids = Teams.objects.filter(id__in=request.POST.getlist('teams')).values_list('users', flat=True)
+            #if request.POST.getlist('teams', []):
+                #user_ids = Teams.objects.filter(id__in=request.POST.getlist('teams')).values_list('users', flat=True)
                 #assigned_to_user_ids = Equipment.assigned_to.all().values_list('id', flat=True)
                 #for user_id in user_ids:
                 #    if user_id not in assigned_to_user_ids:
@@ -278,25 +286,25 @@ def Equipment_Edit(request, equipment_id):
 
             #kwargs = {'domain': request.get_host(), 'protocol': request.scheme}
             #send_email.delay(equipment.id, **kwargs)
-            success_url = reverse('Equipment:Equipment_List')
-            if request.POST.get('from_Locate_id'):
-                success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
-            return JsonResponse({'error': False, 'success_url':success_url})
+            #success_url = reverse('Equipment:Equipment_List')
+            #if request.POST.get('from_Locate_id'):
+                #success_url = reverse('Equipment:view_locate', args=(request.POST.get('from_Locate_id'),))
+            #return JsonResponse({'error': False, 'success_url':success_url})
+            return redirect('Equipment:Locate_List')
         else:
-            return JsonResponse({'error':True, 'errors': form.errors})
+            return JsonResponse({'errors': form.errors})
 
 @login_required
 @Manager_access_required
-def Equipment_Delete(request, equipment_id):
-    equipment_obj = get_object_or_404(Equipment, pk=equipment_id)
+def Locate_Delete(request, locate_id):
+    locate_obj = get_object_or_404(Locate, pk=locate_id)
 
     if not (request.user.role == 'ADMIN' or request.user.is_superuser or equipment_obj.created_by == request.user):
         raise PermissionDenied
 
     if request.method == 'GET':
-        equipment_obj.delete()
+        locate_obj.delete()
 
-        if request.GET.get('view_locate', None):
-            return redirect(reverse('Equipment:view_locate', args=(request.GET.get('view_locate'),)))
-        return redirect('equipment_list.html')
-"""
+        #if request.GET.get('view_locate', None):
+            #return redirect(reverse('Equipment:view_locate', args=(request.GET.get('view_locate'),)))
+        return redirect('Equipment:Locate_List')

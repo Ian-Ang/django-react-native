@@ -19,17 +19,11 @@
           <form  id="docs_filter" method="POST" action="">
             {% csrf_token %}
               <div class="form-row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Location</label>
-                    <select class="form-control" id="locate_id" name="locate_id">
-                      <option value="">--location--</option>
-                      {% for each_locate in locate%}
-                      <option  value="{{each_locate.id}}" {% if request.POST.locate_id %}
-                      {% ifequal each_locate.id request.POST.locate_id %}selected{% endifequal %}{% endif %}>
-                      {{each_locate.name}}</option>
-                      {% endfor %}
-                    </select>
+                    <label for="exampleInputEmail1">Location Name</label>
+                    <input type="text" class="form-control" placeholder="Location Name" name="name"
+                    {% if request.POST.name %} value="{{request.POST.neme}}"{%endif%}/>
                   </div>
                 </div>
                 <div class="col-md-3 text-center">
@@ -56,11 +50,12 @@
       <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
-            {% if equipment|length > 0 %}
+            {% if locate|length > 0 %}
             <tr class="text-center">
               <th>ID</th>
               <th>Name</th>
               <th>Is Active</th>
+              <th>Description</th>
               <th>Actions</th>
             </tr>
             {% endif %}
@@ -84,11 +79,12 @@
               <td class="text-center" scope="row">{{forloop.counter}}</td>
               <td>{{ loc.name}}</td>
               <td>{{ loc.is_active}}</td>
+              <td>{{ loc.description}}</td>
               <td class="actions text-center">
                 {% if request.user == equip.created_by or request.user.role == 'ADMIN' %}
-                <a href="#" class="btn btn-info edit"><i class="fas fa-eye"></i></a>
-                <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
-                <a href="#" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                <a href="{% url 'Equipment:Locate_Detail' loc.id %}" class="btn btn-info edit"><i class="fas fa-eye"></i></a>
+                <a href="{% url 'Equipment:Locate_Edit' loc.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                <a href="{% url 'Equipment:Locate_Delete' loc.id %}" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
                 {% endif %}
               </td>
             {% endfor %}
