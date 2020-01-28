@@ -127,6 +127,7 @@ def Equipment_Edit(request, equipment_id):
         form = EquipmentForm(request.POST, instance=equipment_obj, request_user=request.user)
         if form.is_valid():
             equipment = form.save(commit=False)
+            equipment.updated_on = datetime.today()
             equipment.updated_by = request.user
             equipment.save()
             #form.save_m2m()
@@ -211,7 +212,6 @@ def Locate_Create(request):
     if request.method == 'POST':
         form = LocateForm(request.POST, request_user=request.user)
         if form.is_valid():
-            #locate.id =
             locate = form.save(commit=False)
             locate.created_by = request.user
             locate.save()
@@ -273,6 +273,7 @@ def Locate_Edit(request, locate_id):
         form = LocateForm(request.POST, instance=locate_obj, request_user=request.user)
         if form.is_valid():
             locate = form.save(commit=False)
+            locate.updated_on = datetime.today()
             locate.updated_by = request.user
             locate.save()
             #form.save_m2m()
