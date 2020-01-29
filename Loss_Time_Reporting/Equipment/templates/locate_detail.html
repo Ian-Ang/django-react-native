@@ -1,3 +1,86 @@
 {% extends "layout/base.html" %}
 {% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Location Detail</h1>
+  <div class="row">
+    <div class="col-lg-12 text-right">
+      <span class="d-lg-inline"><a class="btn btn-danger" href="{% url 'Equipment:Equipment_List'%}"><i class="fa fa-window-close"></i></a></span>
+    </div>
+  </div>
+  <div class="card shadow mb-4 list_filter_row">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Location</h6>
+      </div>
+      <div class="card-body">
+        <div class="col-lg-12">
+          {% if locate.id %}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">ID</label>
+              <div class="form-control">{{locate.id}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if locate.name %}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">Name</label>
+              <div class="form-control">{{locate.name}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if locate.is_active %}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">Is Active</label>
+              <div class="form-control">{{locate.is_active}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if locate.description %}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">Description</label>
+              <div class="form-control">{{locate.description}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if locate.created_on %}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">Created On</label>
+              <div class="form-control">{{locate.created_on}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if locate.updated_on %}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">Update On</label>
+              <div class="form-control">{{locate.updated_on}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if locate.created_by%}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">Created By</label>
+              <div class="form-control">{{locate.created_by}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if locate.updated_by %}
+          <div class="col-7">
+            <div class="form-group">
+              <label for="id" class="col-5 col-form-label">Update By</label>
+              <div class="form-control">{{locate.updated_by}}</div>
+            </div>
+          </div>
+          {% endif %}
+      </div>
+  </div>
+</div>
+<!-- /.container-fluid -->
 {% endblock content %}

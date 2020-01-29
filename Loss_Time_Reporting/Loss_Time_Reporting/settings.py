@@ -20,7 +20,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
 
 #LOGIN_REDIRECT_URL = ''
-#LOGOUT_REDIRECT_URL = ''
+LOGOUT_REDIRECT_URL = '/login/'
 
 # Application definition
 
@@ -35,11 +35,12 @@ INSTALLED_APPS = [
     'rest_framework',
     'phone_field',
     'simple_pagination',
+    'sorl.thumbnail',
     #Apps
     'Activity.apps.ActivityConfig',
     'Equipment.apps.EquipmentConfig',
     'Common.apps.CommonConfig',
-    'Teams.apps.TeamsConfig'
+    'Teams.apps.TeamsConfig',
 
 ]
 

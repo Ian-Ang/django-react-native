@@ -1,8 +1,8 @@
-from django.contrib import admin
 from django.urls import path
+from Activity.views import *
 
 app_name = 'Activity'
 
 urlpatterns = [
-    #path('admin/', admin.site.urls),
+    path('', Activity_List, name='Activity_List'),
 ]

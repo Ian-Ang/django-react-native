@@ -34,15 +34,15 @@
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Custom Equipment:</h6>
-        <a class="collapse-item" href="{% url 'Equipment:Equipment_Create' %}">Create </a>
-        <a class="collapse-item" href="{% url 'Equipment:Equipment_List' %}">List Equipment </a>
+        <h6 class="collapse-header">Equipment:</h6>
+        <!--<a class="collapse-item" href="{% url 'Equipment:Equipment_Create' %}">Create </a>-->
+        <a class="collapse-item" href="{% url 'Equipment:Equipment_List' %}">Equipments </a>
         <a class="collapse-item" href="#">Report</a>
       </div>
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Custom Location:</h6>
-        <a class="collapse-item" href="{% url 'Equipment:Locate_Create' %}">Create </a>
-        <a class="collapse-item" href="{% url 'Equipment:Locate_List' %}">List Location</a>
+        <h6 class="collapse-header">Location:</h6>
+        <!--<a class="collapse-item" href="{% url 'Equipment:Locate_Create' %}">Create </a>-->
+        <a class="collapse-item" href="{% url 'Equipment:Locate_List' %}">Locations</a>
         <a class="collapse-item" href="#">Report</a>
       </div>
     </div>
@@ -52,13 +52,13 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
       <i class="fas fa-fw fa-wrench"></i>
-      <span>Utilities</span>
+      <span>Activitys</span>
     </a>
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Custom Utilities:</h6>
-        <a class="collapse-item" href="#">Create</a>
-        <a class="collapse-item" href="#">List Utilities</a>
+        <h6 class="collapse-header">Activity:</h6>
+        <a class="collapse-item" href="#">Status</a>
+        <a class="collapse-item" href="{% url 'Activity:Activity_List' %}">Activity List</a>
         <a class="collapse-item" href="#">Report</a>
       </div>
     </div>
