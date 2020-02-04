@@ -50,14 +50,6 @@ class LocateForm(forms.ModelForm):
         super(LocateForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs = {"class":"form-control"}
-        """
-        if request_user.role == 'ADMIN' or request_user.is_superuser:
-            self.fields["locate_id"].queryset = Locate.objects.filter(is_active=True)
-            self.fields["teams"].choices = [(team.get('id'), team.get('name'))
-                                    for team in Teams.objects.all().values('id','name')]
-        if request_user.role == 'USER':
-            self.fields["locate_id"].queryset = Locate.objects.filter(Q(created_by=request_user) | Q(is_active=True))
-        """
 
         self.fields['name'].required = True
         self.fields['is_active'].required = True

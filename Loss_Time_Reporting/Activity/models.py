@@ -67,5 +67,5 @@ class Activity(models.Model):
 
     def save(self, **kwargs):
         if not self.id:
-            self.id = "{}{:11d}".format('ACT', self.no)
+            self.id = "{}{:09d}".format('ACT', self.no)
         super().save(*kwargs)

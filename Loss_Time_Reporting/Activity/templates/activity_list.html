@@ -7,7 +7,7 @@
   <h1 class="h3 mb-2 text-gray-800">Activity List</h1>
   <div class="row">
     <div class="col-lg-12 text-right">
-      <span class="d-lg-inline"><a class="btn btn-primary" href="#"><i class="fa fa-plus"></i>Add New Activity</a></span>
+      <span class="d-lg-inline"><a class="btn btn-primary" href="{% url 'Activity:Activity_Create'%}"><i class="fa fa-plus"></i>Add New Activity</a></span>
     </div>
   </div>
   <!-- filter -->
@@ -18,6 +18,61 @@
       <div class="card-body">
           <form  id="docs_filter" method="POST" action="">
             {% csrf_token %}
+            <div class="form-row">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <label for="status" class="col col-form-label">Equipment Name</label>
+                  <input type="text" class="form-control" name="equipment_name" placeholder="Equipment Name"
+                  {% if request.POST.equipment_name%} value="{{request.POST.equipment_name}}" {%endif%}/>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <label for="status" class="col col-form-label">Status</label>
+                  <select class="form-control" id="status_ids" name="status_ids">
+                    <option value="">--Status--</option>
+                    {% for re_status in status%}
+                    <option value="{{re_status.id}}" {% if request.POST.status_ids %}
+                    {% ifequal re_status.id request.POST.status_ids %}selected{% endifequal %}{% endif %}>
+                    {{re_status.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <label for="source" class="col col-form-label">Source</label>
+                  <select class="form-control" id="source" name="source">
+                    <option value="">--Source--</option>
+                    {% for each_source in source_choices %}
+                    <option value="{{each_source.0}}" {% if request.POST.source %}
+                    {% ifequal source.0 request.POST.source %}selected{% endifequal %}{% endif %}>
+                    {{each_source.1}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+                <div class="form-group">
+                  <label for="is_active" class="col col-form-label">Is Active</label>
+                  <select class="form-control" id="is_active" name="is_active"
+                  {% if request.POST.is_active %}selected{%endif%}>
+                    <option value="">--Choise--</option>
+                    <option value="True">Active</option>
+                    <option value="False">Deavtive</option>
+                    {% if request.POST.is_active %}select{%endif%}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-row text-right">
+              <div class="col col-sm-12 col-md-8 col-lg-12 my-3">
+                <div class="form-group">
+                  <button class="btn btn-primary save" type="submit"><i class="fas fa-search"> </i>Search</button>
+                  <a href="{% url 'Activity:Activity_List' %}" class="btn btn-secondary clear"><i class="fas fa-eraser"> </i>Clear</a>
+                </div>
+              </div>
+            </div>
           </form>
       </div>
   </div>
@@ -35,10 +90,53 @@
       <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
+            {% if activity|length > 0%}
+            <tr class="text-center">
+              <th>NO</th>
+              <th>Equipment</th>
+              <th>Source</th>
+              <th>Status</th>
+              <th>Date Start</th>
+              <th>Time Start</th>
+              <th>Data End</th>
+              <th>Time End</th>
+              <th>Actions</th>
+            </tr>
+            {% endif %}
           </thead>
           <tbody>
+            {% if par_page%}
+            {% paginate per_page activity %}
+            {% else %}
+            {% paginate 10 activity %}
+            {% endif %}
+            {% for act in activity %}
+            <tr>
+              <td class="text-center">{{forloop.counter}}</td>
+              <td>{{act.equipment_ids}}</td>
+              <td>{{act.source}}</td>
+              <td>{{act.status_ids}}</td>
+              <td>{{act.start_date}}</td>
+              <td>{{act.start_time}}</td>
+              <td>{{act.end_date}}</td>
+              <td>{{act.end_date}}</td>
+              <td class="text-center">
+                {% if request.user == act.created_by or request.user == 'ADMIN' %}
+                <a href="{% url 'Activity:Activity_Detail' act.id %}" class="btn btn-info edit"><i class="fas fa-eye"></i></a>
+                <a href="{% url 'Activity:Activity_Edit' act.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                <a href="{% url 'Activity:Activity_Delete' act.id %}" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
           </tbody>
         </table>
+      </div>
+      {% ifequal activity|length 0 %}
+      <h6 class="text-center"> No Activity Found</h6>
+      {% endifequal %}
+      <div class="text-center">
+        {% show_pages%}
       </div>
     </div>
   </div>
@@ -48,8 +146,7 @@
 {% endblock content %}
 
 {% block inline_js %}
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>-->
-<!--<script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function () {
       $('.assigned_users').select2();
       $(".filter_toggle").click(function () {
@@ -76,5 +173,5 @@
       $('#docs_filter').attr("action", $(this).attr("href"))
       $('#docs_filter').submit()
     })
-</script>-->
+</script>
 {% endblock inline_js %}

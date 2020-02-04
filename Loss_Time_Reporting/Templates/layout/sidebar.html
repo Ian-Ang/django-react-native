@@ -34,14 +34,8 @@
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Equipment:</h6>
-        <!--<a class="collapse-item" href="{% url 'Equipment:Equipment_Create' %}">Create </a>-->
+        <h6 class="collapse-header">Equipment :</h6>
         <a class="collapse-item" href="{% url 'Equipment:Equipment_List' %}">Equipments </a>
-        <a class="collapse-item" href="#">Report</a>
-      </div>
-      <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Location:</h6>
-        <!--<a class="collapse-item" href="{% url 'Equipment:Locate_Create' %}">Create </a>-->
         <a class="collapse-item" href="{% url 'Equipment:Locate_List' %}">Locations</a>
         <a class="collapse-item" href="#">Report</a>
       </div>
@@ -57,7 +51,7 @@
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Activity:</h6>
-        <a class="collapse-item" href="#">Status</a>
+        <a class="collapse-item" href="{% url 'Activity:Status_List'%}">Status</a>
         <a class="collapse-item" href="{% url 'Activity:Activity_List' %}">Activity List</a>
         <a class="collapse-item" href="#">Report</a>
       </div>

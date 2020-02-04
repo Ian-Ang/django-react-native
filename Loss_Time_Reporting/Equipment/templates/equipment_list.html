@@ -39,8 +39,8 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-3 text-center">
-                  <div class="form-group mt-4">
+                <div class="col-md-3 mx-4 py-4 text-center">
+                  <div class="form-group">
                     <button class="btn btn-primary save" type="submit">Search</button>
                     <a href="{% url 'Equipment:Equipment_List' %}" class="btn btn-info clear">Clear</a>
                   </div>
@@ -104,8 +104,8 @@
                 <a href="{% url 'Equipment:Equipment_Delete' equip.id %}" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
                 {% endif %}
               </td>
-            {% endfor %}
             </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>

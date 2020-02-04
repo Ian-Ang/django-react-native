@@ -33,13 +33,44 @@ class ActivityForm(forms.ModelForm):
         status = self.cleaned_data.get('status_ids')
         if not self.obj_instance:
             if Activity.objects.filter(Q(status_ids=status_ids) & Q(is_active =True)).exists():
-                raise forms.ValidationError('Activity with this name already exists')
+                raise forms.ValidationError('Activity with this status already exists')
             return status
         if Activity.objects.filter(Q(status_ids=status_ids) & Q(is_active =True)).exclude(id=self.obj_instance.id).exists():
-            raise forms.ValidationError('Activity with this name already exists')
+            raise forms.ValidationError('Activity with this status already exists')
             return status
         return status
 
     class Meta:
         model = Activity
-        fields = ('equipment_ids','source','status_ids','start_date','start_time','end_date','end_time','description')
+        fields = ('equipment_ids','source','status_ids','start_date','start_time','end_date','end_time','is_active','description')
+
+
+class StatusForm(forms.ModelForm):
+    # TODO: Define other fields here
+
+    class Meta:
+        model = Status
+        fields = ('name','is_active','description')
+
+    def __init__(self, *args, **kwargs):
+        request_user = kwargs.pop('request_user', None)
+        self.obj_instance = kwargs.get('instance', None)
+        super(StatusForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs = {"class": "form-control"}
+
+        self.fields['name'].required = True
+        self.fields['is_active'].required = True
+        self.fields['description'].required = False
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if not self.obj_instance:
+            if Status.objects.filter(neme=name).exists():
+                raise form.ValidationError('Status with name already exists')
+            return name
+        if Equipment.objects.filter(name=name).exclude(id=self.obj_instance.id).exists():
+            raise form.ValidationError('Status with name already exists')
+            return name
+        return name

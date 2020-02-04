@@ -1,0 +1,140 @@
+{% extends "layout/base.html" %}
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <h1 class="h3 mb-2 text-gray-800">Activity Detail</h1>
+  <div class="row">
+    <div class="col-lg-12 text-right">
+      <span class="d-lg-inline"><a class="btn btn-danger" href="{% url 'Activity:Activity_List'%}"><i class="fa fa-window-close"></i></a></span>
+    </div>
+  </div>
+  <div class="card shadow">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Activity</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          {% if activity.id %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="id" class="col-form-label">ID</label>
+              <div class="form-control">{{activity.id}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.equipment_ids %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="equipment_ids" class="col-form-label">Equipment Name</label>
+              <div class="form-control">{{activity.equipment_ids}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.source %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="source" class="col-form-label">Source</label>
+              <div class="form-control">{{activity.source}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.status_ids %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="status_ids" class="col-form-label">Status</label>
+              <div class="form-control">{{activity.status_ids}}</div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="row">
+          {% if activity.start_date%}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="start_date" class="col-form-label">Date Start</label>
+              <div class="form-control">{{activity.start_date}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.start_time %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="start_time" class="col-form-label">Time Start</label>
+              <div class="form-control">{{activity.start_time}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.end_date %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="end_date" class="col col-form-label">Date End</label>
+              <div class="form-control">{{activity.end_date}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.end_time %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="end_time" class="col-form-label">Time End</label>
+              <div class="form-control">{{activity.end_time}}</div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="row">
+          {% if activity.is_active %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="is_active" class="col-form-label">Is Active</label>
+              <div class="form-control">{{activity.is_active}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.description %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="description" class="col-form-label">Description</label>
+              <div class="form-control">{{activity.description}}</div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="row">
+          {% if activity.created_on %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="created_on" class="col-form-label">Created On</label>
+              <div class="form-control">{{activity.created_on}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.updated_on %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="updated_on" class="col-form-label">Update On</label>
+              <div class="form-control">{{activity.updated_on}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.created_by%}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="created_by" class="col-form-label">Created By</label>
+              <div class="form-control">{{activity.created_by}}</div>
+            </div>
+          </div>
+          {% endif %}
+          {% if activity.updated_by %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-3 mx-auto">
+            <div class="form-group">
+              <label for="updated_by" class="col-form-label">Update By</label>
+              <div class="form-control">{{activity.updated_by}}</div>
+            </div>
+          </div>
+          {% endif %}
+      </div>
+  </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}

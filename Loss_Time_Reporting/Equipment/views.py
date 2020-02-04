@@ -125,7 +125,7 @@ def Equipment_Delete(request, equipment_id):
         equipment_obj.delete()
         return redirect('Equipment:Equipment_List')
 
-"""========================================================="""
+#==================================================================================
 
 @login_required
 @Manager_access_required
