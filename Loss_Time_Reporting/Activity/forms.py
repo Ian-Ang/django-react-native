@@ -46,17 +46,11 @@ class ActivityForm(forms.ModelForm):
 
 
 class StatusForm(forms.ModelForm):
-    # TODO: Define other fields here
-
-    class Meta:
-        model = Status
-        fields = ('name','is_active','description')
 
     def __init__(self, *args, **kwargs):
         request_user = kwargs.pop('request_user', None)
         self.obj_instance = kwargs.get('instance', None)
         super(StatusForm, self).__init__(*args, **kwargs)
-
         for field in self.fields.values():
             field.widget.attrs = {"class": "form-control"}
 
@@ -67,10 +61,14 @@ class StatusForm(forms.ModelForm):
     def clean_name(self):
         name = self.cleaned_data.get('name')
         if not self.obj_instance:
-            if Status.objects.filter(neme=name).exists():
+            if Status.objects.filter(name=name).exists():
                 raise form.ValidationError('Status with name already exists')
             return name
-        if Equipment.objects.filter(name=name).exclude(id=self.obj_instance.id).exists():
+        if Status.objects.filter(name=name).exclude(id=self.obj_instance.id).exists():
             raise form.ValidationError('Status with name already exists')
             return name
         return name
+
+    class Meta:
+        model = Status
+        fields = ('name','is_active','description')

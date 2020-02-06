@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from Equipment.models import Equipment
 from Activity.models import Activity, Status
-from Activity.forms import ActivityForm
+from Activity.forms import ActivityForm, StatusForm
 from Activity.utils import *
 from Teams.models import Teams
 from Common.access_decorators_mixins import (Manager_access_required, Supervisor_access_required, Staff_access_required,
@@ -166,3 +166,85 @@ def Status_List(request):
         status = status.distinct()
         today = datetime.today().date()
         return render(request, 'status_list.html', {'status':status,'today':today})
+
+
+@login_required
+@Staff_access_required
+def Status_Create(request):
+    if request.method == 'GET':
+        if request.user.role == 'ADMIN' or request.user.is_superuser:
+            users = User.objects.filter(is_active=True).order_by('username')
+        else:
+            users = User.objects.filter(role='ADMIN').order_by('username')
+        form = StatusForm(request_user=request.user)
+        return render(request, 'status_create.html', {'form':form, 'users':users})
+
+    if request.method == 'POST':
+        form = StatusForm(request.POST, request_user=request.user)
+        if form.is_valid():
+            status = form.save(commit=False)
+            status.created_by = request.user
+            status.save()
+            return redirect('Activity:Status_List')
+        else:
+            return JsonResponse({'error':True, 'errors': form.errors})
+
+
+@login_required
+@Supervisor_access_required
+@Staff_access_required
+def Status_Detail(request, status_id):
+    status = get_object_or_404(Status, pk=status_id)
+
+    if not (request.user.role == 'ADMIN' or request.user.is_superuser or status.created_by == request.user):
+        raise PermissionDenied
+
+    if request.method == 'GET':
+        if request.user.is_superuser or request.user.role == 'ADMIN':
+            users_mention = list(User.objects.filter(is_active=True).values('username'))
+        elif request.user != status.created_by:
+            users_mention = [{'username': status.created_by.username}]
+        else:
+            users_mention = list(status.created_by.all().values('username'))
+        return render(request, 'status_detail.html', {'status': status, 'users_mention': users_mention})
+
+
+@login_required
+@Staff_access_required
+def Status_Edit(request, status_id):
+    status_obj = get_object_or_404(Status, pk=status_id)
+
+    if not (request.user.role == 'ADMIN' or request.user.is_superuser or status_obj.created_by == request_user):
+        raise PermissionDenied
+
+    if request.method == 'GET':
+        if request.user.role == 'ADMIN' or request.user.is_superuser:
+            users = User.objects.filter(is_active=True).order_by('username')
+        else:
+            users = User.objects.filter(role='ADMIN').order_by('username')
+        form = StatusForm(instance=status_obj, request_user=request.user)
+        return render(request, 'status_create.html', {'form':form, 'status_obj':status_obj, 'users':users})
+
+    if request.method == 'POST':
+        form = StatusForm(request.POST, instance=status_obj, request_user=request.user)
+        if form.is_valid():
+            status = form.save(commit=False)
+            status.updated_on = datetime.today()
+            status.updated_by = request.user
+            status.save()
+            return redirect('Activity:Status_List')
+        else:
+            return JsonResponse({'error':True, 'errors': form.errors})
+
+
+@login_required
+@Manager_access_required
+def Status_Delete(request, status_id):
+    status_obj = get_object_or_404(Status, pk=status_id)
+
+    if not (request.user.role == 'ADMIN' or request.user.is_superuser or status_obj.created_by == request.user):
+        raise PermissionDenied
+
+    if request.method == 'GET':
+        status_obj.delete()
+        return redirect('Activity:Status_List')

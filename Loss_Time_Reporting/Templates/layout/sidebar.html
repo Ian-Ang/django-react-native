@@ -5,7 +5,7 @@
     <div class="sidebar-brand-icon rotate-n-15">
       <i class="fas fa-laugh-wink"></i>
     </div>
-    <div class="sidebar-brand-text mx-3">ULTR Admin</div>
+    <div class="sidebar-brand-text mx-3">Utility Reporting</div>
   </a>
 
   <!-- Divider -->
@@ -51,8 +51,8 @@
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Activity:</h6>
+        <a class="collapse-item" href="{% url 'Activity:Activity_List' %}">Activity</a>
         <a class="collapse-item" href="{% url 'Activity:Status_List'%}">Status</a>
-        <a class="collapse-item" href="{% url 'Activity:Activity_List' %}">Activity List</a>
         <a class="collapse-item" href="#">Report</a>
       </div>
     </div>

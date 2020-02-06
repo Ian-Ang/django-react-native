@@ -41,18 +41,50 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="date-start" class="col-form-label">Date Start</label>
-              <div>{{form.start_date}}</div>
+              <label for="date-start" class="col-form-label required">Date Start{% if form.start_date.filed.required %}
+                <span class="error_marker" style="color:red">*</span>{% endif %}
+              </label>
+              <div class="input-group">
+                {{form.start_date}}
+                <div id="datepicker1" class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                </div>
+              </div>
+              <span class="error" id="id_star_date">{{form.start_date.error}}</span>
               <label for="time-start" class="col-form-label">Time Start</label>
-              <div>{{form.start_time}}</div>
+              <div class="input-group">
+                {{form.start_time}}
+                <div id="datetimepicker2" class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="fas fa-clock"></i>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
               <label for="date-end" class="col-form-label">Date End </label>
-              <div>{{form.end_date}}</div>
+              <div class="input-group">
+                {{form.end_date}}
+                <div id="datetimepicker3" class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="fas fa-calendar-alt"></i>
+                  </span>
+                </div>
+              </div>
+              <span class="error" id="id__star_date">{{form.start_date.error}}</span>
               <label for="time-end" class="col-form-label">Time End </label>
-              <div>{{form.end_time}}</div>
+              <div class="input-group">
+                {{form.start_time}}
+                <div id="datetimepicker4" class="input-group-append">
+                  <span class="input-group-text">
+                    <i class="fas fa-clock"></i>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
@@ -82,3 +114,10 @@
   </div>
 
 {% endblock content %}
+{% block inline_js %}
+<script type="text/javascript">
+  $("#datepicker1").datetimepicker({
+    format: "YYYY-MM-DD"
+  })
+</script>
+{% endblock inline_js %}

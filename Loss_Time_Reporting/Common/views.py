@@ -33,7 +33,7 @@ def handler500(request):
     return render(request, '500.html', status=500)
 
 class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = "manager/index.html"
+    template_name = "layout/index.html"
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
