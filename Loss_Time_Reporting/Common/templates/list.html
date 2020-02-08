@@ -1,0 +1,301 @@
+{% extends "layout/base.html" %}
+{% load paginate%}
+{% block content %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+  <!-- Page Heading
+  <h1 class="h3 mb-2 text-gray-800">User List</h1>-->
+  <div class="row">
+    <div class="col-lg-12 text-right mb-2">
+      <span class="d-lg-inline"><a class="btn btn-primary" href="#"><i class="fa fa-plus"></i>Add New User</a></span>
+    </div>
+  </div>
+  <!-- filter -->
+  <div class="card shadow mb-4 list_filter_row" style="display:none;">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Filter User</h6>
+      </div>
+      <div class="card-body">
+          <form  id="docs_filter" method="POST" action="">
+            {% csrf_token %}
+              <div class="form-row">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Username</label>
+                    <input type="text" class="form-control" placeholder="Username" name="username"
+                    {% if request.POST.username %} value="{{request.POST.username}}"{%endif%}/>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="text" class="form-control" placeholder="Email" name="email"
+                    {% if request.POST.email%} value="{{request.POST.email}}"{%endif%}/>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-3">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Roles</label>
+                    <select class="form-control" id="roles" name="roles">
+                      <option value="">--Select Roles--</option>
+                      {% for roles in role %}
+                      <option value="{{role.0}}" {% if request.POST.roles %}
+                        {% ifequal roles.0 request.POST.roles %}selected{% endifequal %}{% endif %}>{{ roles.1 }}
+                      </option>
+                      {% endfor%}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-3 py-4 text-center">
+                  <div class="form-group">
+                    <button class="btn btn-primary save" type="submit">Search</button>
+                    <a href="{% url 'Common:User_List'%}" class="btn btn-info clear">Clear</a>
+                  </div>
+                </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="col-md-12 mt-3">
+      <ul class="nav nav-tabs font-weight-bold text-primary" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="open-tab" data-toggle="tab" href="#open" role="tab" aria-controls="open"
+            aria-selected="true">Active Users ({{active_users|length}})</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="close-tab" data-toggle="tab" href="#close" role="tab" aria-controls="close"
+            aria-selected="false">Inactive Users ({{inactive_users|length}})</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="open" role="tabpanel" aria-labelledby="open">
+          <div class="card-header py-2 text-right">
+            <div class="row mx-1">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-5 py-2">
+                <span class="m-0 font-weight-bold text-primary float-left ">Active User - {% if show_pageitems %}
+                  {% show_pageitems %}{% else %}
+                  {{ active_users|length}}{% endif %}
+                </span>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-5 py-2">
+                <span class="m-0 font-weight-bold text-primary float-left">Today : {{today.today }}</span>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-2 py-1">
+                <span class="filter_toggle">
+                  <a href="#" class="btn btn-primary"><i class="fas fa-filter"></i></a>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  {% if active_users|length > 0 %}
+                  <tr class="text-center">
+                    <th width="20%">Username</th>
+                    <th width="20%">Email Address</th>
+                    <th width="8%">User Role</th>
+                    <th width="8%">Permissions</th>
+                    <th width="15%">Status</th>
+                    <th width="20%">Actions</th>
+                  </tr>
+                  {% endif %}
+                </thead>
+                <tbody>
+                  {% if per_page %}
+                  {% paginate per_page active_users %}
+                  {% else %}
+                  {% paginate 10 active_users %}
+                  {% endif %}
+                  {% for user in active_users %}
+                  <tr class="text-center">
+                    <td><a href="#">{{user.username}}</a></td>
+                    <td>{{user.email}}</td>
+                    <td class="user_role">{% if user.is_superuser %} Admin {% else %} {{user.role}} {% endif %}</td>
+                    <td>
+                      {% if user.is_superuser or user.role == 'ADMIN' %}
+                      Administrator
+                      {% else %}
+                      {% if user.role == 'SUPERUSER' and user.has_manager_access %}
+                      Superuser, Manager
+                      {% elif user.has_supervisor_access and not user.has_manager_access %}
+                      Supervisor
+                      {% elif not user.has_staff_access and user.has_supervisor_access %}
+                      Staff
+                      {% else %}
+                      {{''}}
+                      {% endif %}
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% ifnotequal request.user user  %}
+                      <a {% if user.is_active %}
+                        onclick="return confirm('Are you sure you want to deactivate this user?')" {% else %}
+                        onclick="return confirm('Are you sure you want to activate this user?')" {% endif %}
+                        href="#" class="on_off"
+                        style="color: #454545; text-decoration: none;">
+                        {% if user.is_active == True %}
+                        <i class="fa fa-toggle-on"></i> Active
+                        {% else %}
+                        <i class="fa fa-toggle-off"></i> InActive
+                        {% endif %}
+                      </a>
+                      {% else %}
+                      Active
+                      {% endifnotequal %}
+                    </td>
+                    <td class="actions">
+                      <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="#" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                      <a href="#" class="btn btn-info edit fas fa-road" ><i class="fas fa-undo"></i><i class="fas fa-lock"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% ifequal active_users|length 0 %}
+            <h6 class="text-center">No Closed Acccount Records Found</h6>
+            {% endifequal %}
+            <div class="text-center row marl">
+              {% show_pages %}
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="close" role="tabpanel" aria-labelledby="close">
+          <div class="card-header py-2 text-right">
+            <div class="row mx-1">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-5 py-2">
+                <span class="m-0 font-weight-bold text-primary float-left ">Inactive User - {% if show_pageitems %}
+                  {% show_pageitems %}{% else %}
+                  {{ inactive_users|length}}{% endif %}
+                </span>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-5 py-2">
+                <span class="m-0 font-weight-bold text-primary float-left">Today : {{today.today }}</span>
+              </div>
+              <div class="col-12 col-sm-12 col-md-6 col-lg-2 py-1">
+                <span class="filter_toggle">
+                  <a href="#" class="btn btn-primary"><i class="fas fa-filter"></i></a>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  {% if active_users|length > 0 %}
+                  <tr class="text-center">
+                    <th width="20%">Username</th>
+                    <th width="20%">Email Address</th>
+                    <th width="8%">User Role</th>
+                    <th width="8%">Permissions</th>
+                    <th width="15%">Status</th>
+                    <th width="20%">Actions</th>
+                  </tr>
+                  {% endif %}
+                </thead>
+                <tbody>
+                  {% if per_page %}
+                  {% paginate per_page active_users %}
+                  {% else %}
+                  {% paginate 10 active_users %}
+                  {% endif %}
+                  {% for user in inactive_users %}
+                  <tr class="text-center">
+                    <td><a href="#">{{user.username}}</a></td>
+                    <td>{{user.email}}</td>
+                    <td class="user_role">{% if user.is_superuser %} Admin {% else %} {{user.role}} {% endif %}</td>
+                    <td>
+                      {% if user.is_superuser or user.role == 'ADMIN' %}
+                      Administrator
+                      {% else %}
+                      {% if user.role == 'SUPERUSER' and user.has_manager_access %}
+                      Superuser, Manager
+                      {% elif user.has_supervisor_access and not user.has_manager_access %}
+                      Supervisor
+                      {% elif not user.has_staff_access and user.has_supervisor_access %}
+                      Staff
+                      {% else %}
+                      {{''}}
+                      {% endif %}
+                      {% endif %}
+                    </td>
+                    <td>
+                      {% ifnotequal request.user user  %}
+                      <a {% if user.is_active %}
+                        onclick="return confirm('Are you sure you want to deactivate this user?')" {% else %}
+                        onclick="return confirm('Are you sure you want to activate this user?')" {% endif %}
+                        href="#" class="on_off"
+                        style="color: #454545; text-decoration: none;">
+                        {% if user.is_active == True %}
+                        <i class="fa fa-toggle-on"></i> Active
+                        {% else %}
+                        <i class="fa fa-toggle-off"></i> InActive
+                        {% endif %}
+                      </a>
+                      {% else %}
+                      Active
+                      {% endifnotequal %}
+                    </td>
+                    <td class="actions">
+                      <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="#" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                      <a href="#" class="btn btn-info edit fas fa-road" ><i class="fas fa-undo"></i><i class="fas fa-lock"></i></a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% ifequal inactive_users|length 0 %}
+            <h6 class="text-center">No Closed Acccount Records Found</h6>
+            {% endifequal %}
+            <div class="text-center row marl">
+              {% show_pages %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <br clear="all">
+    </div>
+  </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+
+{% block inline_js %}
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>-->
+<script type="text/javascript">
+    $(document).ready(function () {
+      $('.assigned_users').select2();
+      $(".filter_toggle").click(function () {
+        $(".list_filter_row").toggle();
+      });
+    });
+
+    search = "{{search}}"
+
+    if (search == 'True') {
+      $(".list_filter_row").show();
+    }
+
+    $('.remove_document').click(function(e){
+      e.preventDefault()
+      url = $(this).attr('href')
+      if (!confirm('Are you sure you want to delete.?'))
+        return;
+      window.location = $(this).attr('href')
+    })
+
+    $("a[rel='page']").click(function(e) {
+      e.preventDefault()
+      $('#docs_filter').attr("action", $(this).attr("href"))
+      $('#docs_filter').submit()
+    })
+</script>
+{% endblock inline_js %}

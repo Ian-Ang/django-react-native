@@ -1,6 +1,7 @@
 import os
 import json
-import datetime
+#import datetime
+from datetime import datetime
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
@@ -168,10 +169,12 @@ class UserListView(AdminRequiredMixin, TemplateView):
         context = super(UserListView, self).get_context_data(**kwargs)
         active_users = self.get_queryset().filter(is_active=True)
         inactive_users = self.get_queryset().filter(is_active=False)
+        today = datetime.today().date()
         context["active_users"] = active_users
         context["inactive_users"] = inactive_users
         context["per_page"] = self.request.POST.get('per_page')
-        context['admin_email'] = settings.ADMIN_EMAIL
+        context['today'] = today
+        #context['admin_email'] = settings.ADMIN_EMAIL
         context['role'] = ROLES
         return context
 
