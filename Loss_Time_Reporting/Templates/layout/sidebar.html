@@ -34,7 +34,7 @@
     </a>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Equipment :</h6>
+        <h6 class="collapse-header">Equipment Manajement :</h6>
         <a class="collapse-item" href="{% url 'Equipment:Equipment_List' %}">Equipments </a>
         <a class="collapse-item" href="{% url 'Equipment:Locate_List' %}">Locations</a>
         <a class="collapse-item" href="#">Report</a>
@@ -50,7 +50,7 @@
     </a>
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Activity:</h6>
+        <h6 class="collapse-header">Activity Manajement:</h6>
         <a class="collapse-item" href="{% url 'Activity:Activity_List' %}">Activity</a>
         <a class="collapse-item" href="{% url 'Activity:Status_List'%}">Status</a>
         <a class="collapse-item" href="#">Report</a>
@@ -61,14 +61,14 @@
   <!-- Nav Item - Utilities Collapse Menu -->
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUsers" aria-expanded="true" aria-controls="collapseUtilities">
-      <i class="fas fa-fw fa-cogs"></i>
-      <span>Setting</span>
+      <i class="fas fa-users-cog"></i>
+      <span>Users</span>
     </a>
     <div id="collapseUsers" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">Custom User:</h6>
-        <a class="collapse-item" href="#">Profile</a>
-        <a class="collapse-item" href="{% url 'Common:User_List'%}">List User</a>
+        <h6 class="collapse-header">User Manajement:</h6>
+        <a class="collapse-item" href="{% url 'Common:user_list'%}">User</a>
+        <a class="collapse-item" href="#">Group</a>
         <a class="collapse-item" href="#">Change Password</a>
       </div>
     </div>

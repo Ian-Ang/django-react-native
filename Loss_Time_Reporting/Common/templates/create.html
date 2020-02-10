@@ -1,0 +1,210 @@
+{% extends "layout/base.html" %}
+{% block content %}
+  <div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">User Mangement</h1>
+    </div>
+
+    <!-- Content Row -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">
+            {% if user_obj %} Edit
+            {% else %} Create {% endif %}
+            User
+          </h6>
+      </div>
+      <div class="card-body">
+      <form id="add_form" action="" method="POST" novalidate enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="first_name" class="col-form-label">First Name {% if user_form.first_name.field.required %}<span style="color:#f00; font-size: 1rem;"
+                class="error">*</span>{% endif %}</label>
+            <input type="text" class="form-control" name="first_name"
+                value="{% if user_obj %}{{ user_obj.first_name }}{% else %}{{ request.POST.first_name }}{% endif %}"
+                placeholder="First Name">
+          </div>
+          <span class="error_ajax" id="id_first_name" style="color:red">{{errors.first_name}}</span>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="last_name" class="col-form-label">Last Name {% if user_form.last_name.field.required %}<span style="color:#f00; font-size: 1rem;"
+                class="error">*</span>{% endif %}</label>
+            <input type="text" class="form-control" name="last_name"
+                value="{% if user_obj %}{{ user_obj.last_name }}{% else %}{{ request.POST.last_name }}{% endif %}"
+                placeholder="Last Name">
+          </div>
+          <span class="error_ajax" id="id_first_name" style="color:red">{{error.last_name}}</span>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="username" class="col-form-label">Username {% if user_form.username.field.required %}<span style="color:#f00; font-size: 1rem;"
+                  class="error">*</span>{% endif %}</label>
+              <input type="text" class="form-control" name="username"
+                  value="{% if user_obj %}{{ user_obj.username }}{% else %}{{ request.POST.username }}{% endif %}"
+                  placeholder="Username">
+            </div>
+            <span class="error_ajax" id="id_username" style="color:red">{{error.username}}</span>
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="email" class="col-form-label">Email Address {% if user_form.email.field.required %}<span style="color:#f00; font-size: 1rem;"
+                  class="error">*</span>{% endif %}</label>
+              <input type="email" class="form-control" name="email"
+                  value="{% if user_obj %}{{ user_obj.email }}{% else %}{{ request.POST.email }}{% endif %}"
+                  {% if user_obj %} readonly="" {% endif %} placeholder="Email Address">
+            </div>
+            <span class="error_ajax" id="id_email" style="color:red">{{error.email}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto"
+            {% if request.user.role != 'ADMIN' and not request.user.is_superuser or request.user.id == user_obj.id %} style="display:none;"
+            {% endif %}>
+            <div class="form-group">
+              <label for="role" class="col-form-label">User Role {% if user_form.role.field.required %}<span style="color:#f00; font-size: 1rem;"
+                  class="error">*</span>{% endif %}</label>
+                  {% if request.user.role == 'ADMIN' or request.user.is_superuser %}
+                  <select name="role" class="form-control" id="user_role">
+                    {% for key, value in form.role.field.choices %}
+                    <option value="{{key}}" {% if value == user_obj.role %}selected="selected"
+                      {% elif user_obj.is_superuser and value == "ADMIN" %}selected{% endif %}>{{value}}</option>
+                    {% endfor %}
+                  </select>
+                  {% else %}
+                  <select name="role" id="user_roles">
+                    <option value="{{user_obj.role}}">{{user_obj.role}}</option>
+                  </select>
+                  {% endif %}
+                <span class="error_ajax" id="id_role" style="color:red">{{ user_form.role.errors }}</span>
+            </div>
+          </div>
+          {% if not user_obj %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="password" class="col-form-label"> Password {% if user_form.password.field.required %}<span style="color:#f00; font-size: 1rem;"
+                  class="error">*</span>{% endif %}</label>
+              <input type="password" class="form-control" name="password"
+                  value="{{ request.POST.password }}"
+                  placeholder="Password">
+            </div>
+            <span class="error_ajax" id="id_password" style="color:red">{{ errors.password }}</span>
+          </div>
+          {% endif %}
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="Profile Picture" class="col-form-label">Upload Profile Picture {% if user_form.profile_pic.field.required %}<span style="color:#f00; font-size: 1rem;"
+                  class="error">*</span>{% endif %}</label>
+              <input type="file" name="profile_pic" accept="image/*" class="form-control">
+            </div>
+            {% if user_obj %}<span>{{user_profile_name }}</span>{% endif %}
+            <span class="error" id="id_profile_pic">{{ errors.profile_pic }}</span>
+          </div>
+          {% if request.user.is_superuser or request.user.role == 'ADMIN' %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="permission">Permissions <span style="color:#f00; font-size: 1rem;" class="error">*</span></label>
+              <br>
+              <div class="btn-group">
+                <label class="btn "> Manager
+                  <input type="checkbox" name="has_manager_access" id="has_manager_access_" autocomplete="off"
+                    {% if user_obj.has_manager_access %} checked {% endif %}
+                    {% if user_obj.is_superuser or user_obj.role == 'ADMIN' %} disabled="disabled" readonly="readonly"
+                    checked="checked" {% endif %}>
+                </label>
+                <label class="btn "> Supervisor
+                  <input type="checkbox" name="has_supervisor_access" id="has_supervisor_access_" autocomplete="off"
+                    {% if user_obj.has_supervisor_access %} checked {% endif %}
+                    {% if user_obj.is_superuser or user_obj.role == 'ADMIN' %} disabled="disabled" readonly="readonly"
+                    checked="checked" {% endif %}>
+                </label>
+                <label class="btn "> Staff
+                  <input type="checkbox" name="has_staff_access" id="has_staff_access_" autocomplete="off"
+                    {% if user_obj.has_staff_access %} checked {% endif %}
+                    {% if user_obj.is_superuser or user_obj.role == 'ADMIN' %} disabled="disabled" readonly="readonly"
+                    checked="checked" {% endif %}>
+                </label>
+              </div>
+              <span class="error_ajax" id="id_has_manager_access" style="color: red;"></span>
+              <span class="error_ajax" id="id_has_supervisor_access" style="color: red;"></span>
+              <span class="error_ajax" id="id_has_staff_access" style="color: red;"></span>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <p style="color:red" id="forbiden_error"></p>
+        <div class="row buttons_row form_btn_row text-center">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mr-auto ml-auto">
+            <div>
+              <button name="submit" type="submit" class="btn btn-primary save">Save</button>
+              <a href="{% if not user_obj or request.user.is_superuser or request.user.role == 'ADMIN' %}{% url 'Common:user_list' %}{% else %}{% url 'Common:profile' %}{% endif %}"
+              class="btn btn-danger clear" id="create_user_cancel">Cancel</a>
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block inline_js %}
+<script type="text/javascript">
+
+  $("#user_role").change(function () {
+    if ($(this).val() == 'ADMIN') {
+      $("#has_manager_access_").attr('checked', 'true')
+      $("#has_supervisor_access_").attr('checked', 'true')
+      $("#has_staff_access_").attr('checked', 'true')
+      $("#has_manager_access_").attr('readonly', 'true')
+      $("#has_manager_access_").attr('disabled', 'true')
+      $("#has_supervisor_access_").attr('readonly', 'true')
+      $("#has_supervisor_access_").attr('disabled', 'true')
+      $("#has_staff_access_").attr('readonly', 'true')
+      $("#has_staff_access_").attr('disabled', 'true')
+    }
+    else {
+      $("#has_manager_access_").removeAttr('checked')
+      $("#has_supervisor_access_").removeAttr('checked')
+      $("#has_staff_access_").removeAttr('checked')
+      $("#has_manager_access_").removeAttr('readonly')
+      $("#has_supervisor_access_").removeAttr('readonly')
+      $("#has_staff_access_").removeAttr('readonly')
+      $("#has_manager_access_").removeAttr('disabled')
+      $("#has_supervisor_access_").removeAttr('disabled')
+      $("#has_staff_access_").removeAttr('disabled')
+    }
+  })
+
+  $('form#add_form').ajaxForm({
+    type: 'POST',
+    dataType: 'json',
+    url: ".",
+    data: $('#add_form').serialize(),
+    success: function (data) {
+      if (data.error) {
+        if (data.error_403) {
+          $("#forbiden_error").text(" *You Don't have permission to edit this user ");
+        }
+        if (data.errors) {
+          $('.error_ajax').html('')
+          for (var key in data.errors) {
+            $('#id_' + key).html("<p>" + data.errors[key][0] + "</p>");
+            $('#id_' + key + '_error').html("<p style='colors:red;'>" + data.errors[key][0] + "</p>");
+          };
+        }
+      }
+      else {
+        window.location = data.success_url;
+      }
+    }
+  });
+
+</script>
+{% endblock %}

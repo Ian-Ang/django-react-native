@@ -7,7 +7,7 @@ from django.contrib.auth import password_validation
 
 
 class UserForm(forms.ModelForm):
-    
+
     password = forms.CharField(max_length=100, required=False)
 
     class Meta:
@@ -36,21 +36,22 @@ class UserForm(forms.ModelForm):
         #     self.fields['password'].required = True
 
     def clean_password(self):
-        password = self.clean_password.get('password')
+        password = self.cleaned_data.get('password')
         if password:
             if len(password)<4:
-                raise form.ValidationError('Password must be at last 4 characters long!')
+                raise forms.ValidationError('Password must be at last 4 characters long!')
         return password
 
     def clean_has_manager_access(self):
         manager = self.cleaned_data.get('has_manager_access', False)
+        user_role = self.cleaned_data.get('role')
         if user_role == 'ADMIN':
             is_admin = True
         else:
             is_admin = False
         if self.request_user.role == 'ADMIN' or self.request_user.is_superuser:
             if not is_admin:
-                superpisor = self.data.get('has_supervisor_access', False)
+                supervisor = self.data.get('has_supervisor_access', False)
                 staff = self.data.get('has_staff_access', False)
                 if not manager and not superpisor and not staff:
                     raise form.ValidationError('Selest atleast one option.')
@@ -59,8 +60,8 @@ class UserForm(forms.ModelForm):
         return manager
 
     def clean_has_supervisor_access(self):
-        superpisor = self.cleaned_data.get('has_supervisor_access', False)
-        if user_role == 'ADMIN':
+        supervisor = self.cleaned_data.get('has_supervisor_access', False)
+        if User.role == 'ADMIN':
             is_admin = True
         else:
             is_admin = False
@@ -68,11 +69,11 @@ class UserForm(forms.ModelForm):
             if not is_admin:
                 manager = self.data.get('has_manager_access', False)
                 staff = self.data.get('has_staff_access', False)
-                if not manager and not superpisor and not staff:
-                    raise form.ValidationError('Selest atleast one option.')
+                if not manager and not supervisor and not staff:
+                    raise forms.ValidationError('Selest atleast one option.')
         if self.request_user.role == 'USER':
             manager = self.instance.has_supervisor_access
-        return superpisor
+        return supervisor
 
     def clean_has_staff_access(self):
         staff = self.cleaned_data.get('has_staff_access', False)
@@ -86,13 +87,13 @@ class UserForm(forms.ModelForm):
             if self.instance.email != email:
                 if not User.objects.filter(email=self.cleaned_data.get("email")).exists():
                     return self.cleaned_data.get("email")
-                raise form.ValidationError('Email already exists')
+                raise forms.ValidationError('Email already exists')
             else:
                 return self.cleaned_data.get("email")
         else:
             if not User.objects.filter(email=self.cleaned_data.get("email")).exists():
                 return self.cleaned_data.get("email")
-            raise form.ValidationError('User already exists with this email')
+            raise forms.ValidationError('User already exists with this email')
 
 
 class LoginForm(forms.ModelForm):

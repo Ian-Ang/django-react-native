@@ -193,12 +193,12 @@ class CreateUserView(AdminRequiredMixin, CreateView):
             user.set_password(form.cleaned_data.get("password"))
         user.save()
 
-        if self.request.POST.getlist('teams'):
-            for team in self.request.POST.getlist('teams'):
-                Teams.objects.filter(id=team).first().users.add(user)
-        current_site = self.request.get_host()
-        protocol = self.request.scheme
-        send_email_to_new_user.delay(user.email, self.request.user.email, domain=current_site, protocol=protocol)
+        #if self.request.POST.getlist('teams'):
+        #    for team in self.request.POST.getlist('teams'):
+        #        Teams.objects.filter(id=team).first().users.add(user)
+        #current_site = self.request.get_host()
+        #protocol = self.request.scheme
+        #send_email_to_new_user.delay(user.email, self.request.user.email, domain=current_site, protocol=protocol)
 
         if self.request.is_ajax():
             data = {'success_url': reverse_lazy('Common:user_list'), 'error':False}
@@ -219,7 +219,7 @@ class CreateUserView(AdminRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(CreateUserView, self).get_context_data(**kwargs)
         context["user_form"] = context["form"]
-        context["teams"] = kwargs["errors"]
+        #context["teams"] = kwargs["errors"]
         return context
 
 class UserDetailView(AdminRequiredMixin, DetailView):

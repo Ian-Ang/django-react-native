@@ -1,0 +1,86 @@
+{% extends "layout/base.html" %}
+{% load staticfiles %}
+{% load thumbnail %}
+{% block content %}
+  <div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">User Profile</h1>
+      <div class="row">
+        <div class="col-lg-12 text-right">
+          <span class="d-lg-inline"><a class="btn btn-danger" href="{% url 'Common:user_list'%}"><i class="fa fa-window-close"></i></a></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Profile : {{user_obj.username}}</h6>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
+            <div class="form-group">
+              <label for="first_name" class="col-form-label">Name</label>
+              <div class="form-control">{{user_obj.first_name}} {{user_obj.last_name}}</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
+            <div class="form-group">
+              <label for="username" class="col-form-label">Username</label>
+              <div class="form-control">{{user_obj.username}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
+            <div class="form-group">
+              <label for="username" class="col-form-label">Email Address</label>
+              <div class="form-control">{{user_obj.email}}</div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
+            <div class="form-group">
+              <label for="id_email" class="col-form-label">Permissions</label>
+              <div class="form-control">
+                {% if user_obj.is_superuser or user_obj.role == 'ADMIN' %}
+                Administrator
+                {% else %}
+                {% if user_obj.has_manager_access and user_obj.role == 'SUPERUSER' %}
+                Manager
+                {% elif user_obj.has_supervisor_access and user_obj.role == 'USER' %}
+                Supervisor
+                {% elif user_obj.has_staff_access and user_obj.role == 'USER' %}
+                Staff
+                {% else %}
+                {{''}}
+                {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
+            <div class="form-data">
+              <label for="profile_pic" class="col-form-label">Picture Profile</label>
+              <div class="form-control">
+                {% if user_obj.profile_pic %}
+                {% thumbnail request.user.profile_pic "125x125" as im %}
+                <img src="{{ im.url }}">
+                {% endthumbnail %}
+                {% else %}
+                <img src="{% static 'img/img-logo1.jpg' %}"/>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+{% block inline_js %}
+
+{% endblock %}
