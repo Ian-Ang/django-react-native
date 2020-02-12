@@ -104,6 +104,16 @@
                   </tr>
                   {% endif %}
                 </thead>
+                <tfoot>
+                  <tr class="text-center">
+                    <th width="20%">Username</th>
+                    <th width="20%">Email Address</th>
+                    <th width="8%">User Role</th>
+                    <th width="8%">Permissions</th>
+                    <th width="15%">Status</th>
+                    <th width="20%">Actions</th>
+                  </tr>
+                </tfoot>
                 <tbody>
                   {% if per_page %}
                   {% paginate per_page active_users %}
@@ -112,7 +122,7 @@
                   {% endif %}
                   {% for user in active_users %}
                   <tr class="text-center">
-                    <td><a href="#">{{user.username}}</a></td>
+                    <td><a href="{% url 'Common:detail' user.id %}">{{user.username}}</a></td>
                     <td>{{user.email}}</td>
                     <td class="user_role">{% if user.is_superuser %} Admin {% else %} {{user.role}} {% endif %}</td>
                     <td>
@@ -148,8 +158,8 @@
                       {% endifnotequal %}
                     </td>
                     <td class="actions">
-                      <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
-                      <a href="#" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                      <a href="{% url 'Common:update' user.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="{% url 'Common:delete' user.id %}" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
                       <a href="#" class="btn btn-info edit fas fa-road" ><i class="fas fa-undo"></i><i class="fas fa-lock"></i></a>
                     </td>
                   </tr>
@@ -186,9 +196,9 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                 <thead>
-                  {% if active_users|length > 0 %}
+                  {% if inactive_users|length > 0 %}
                   <tr class="text-center">
                     <th width="20%">Username</th>
                     <th width="20%">Email Address</th>
@@ -199,15 +209,20 @@
                   </tr>
                   {% endif %}
                 </thead>
+                <tfoot>
+                  <tr class="text-center">
+                    <th width="20%">Username</th>
+                    <th width="20%">Email Address</th>
+                    <th width="8%">User Role</th>
+                    <th width="8%">Permissions</th>
+                    <th width="15%">Status</th>
+                    <th width="20%">Actions</th>
+                  </tr>
+                </tfoot>
                 <tbody>
-                  {% if per_page %}
-                  {% paginate per_page active_users %}
-                  {% else %}
-                  {% paginate 10 active_users %}
-                  {% endif %}
                   {% for user in inactive_users %}
                   <tr class="text-center">
-                    <td><a href="#">{{user.username}}</a></td>
+                    <td><a href="{% url 'Common:detail' user.id %}">{{user.username}}</a></td>
                     <td>{{user.email}}</td>
                     <td class="user_role">{% if user.is_superuser %} Admin {% else %} {{user.role}} {% endif %}</td>
                     <td>
@@ -218,7 +233,7 @@
                       Superuser, Manager
                       {% elif user.has_supervisor_access and not user.has_manager_access %}
                       Supervisor
-                      {% elif not user.has_staff_access and user.has_supervisor_access %}
+                      {% elif user.has_staff_access and not user.has_supervisor_access %}
                       Staff
                       {% else %}
                       {{''}}
@@ -243,8 +258,8 @@
                       {% endifnotequal %}
                     </td>
                     <td class="actions">
-                      <a href="#" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
-                      <a href="#" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                      <a href="{% url 'Common:update' user.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
+                      <a href="{% url 'Common:delete' user.id %}" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
                       <a href="#" class="btn btn-info edit fas fa-road" ><i class="fas fa-undo"></i><i class="fas fa-lock"></i></a>
                     </td>
                   </tr>
@@ -255,9 +270,6 @@
             {% ifequal inactive_users|length 0 %}
             <h6 class="text-center">No Closed Acccount Records Found</h6>
             {% endifequal %}
-            <div class="text-center row marl">
-              {% show_pages %}
-            </div>
           </div>
         </div>
       </div>
@@ -300,5 +312,5 @@
 </script>
 
 <!-- Page level custom scripts -->
-<script src="/static/js/demo/datatables-demo.js"></script>
+<script src="/static/js/datatables.js"></script>
 {% endblock inline_js %}

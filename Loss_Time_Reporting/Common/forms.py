@@ -45,11 +45,11 @@ class UserForm(forms.ModelForm):
     def clean_has_manager_access(self):
         manager = self.cleaned_data.get('has_manager_access', False)
         user_role = self.cleaned_data.get('role')
-        if user_role == 'ADMIN':
+        if user_role == 'SUPERUSER':
             is_admin = True
         else:
             is_admin = False
-        if self.request_user.role == 'ADMIN' or self.request_user.is_superuser:
+        if self.request_user.role == 'SUPERUSER' or self.request_user.is_superuser:
             if not is_admin:
                 supervisor = self.data.get('has_supervisor_access', False)
                 staff = self.data.get('has_staff_access', False)
@@ -61,11 +61,12 @@ class UserForm(forms.ModelForm):
 
     def clean_has_supervisor_access(self):
         supervisor = self.cleaned_data.get('has_supervisor_access', False)
-        if User.role == 'ADMIN':
+        user_role = self.cleaned_data.get('role')
+        if user_role == 'SUPERUSER':
             is_admin = True
         else:
             is_admin = False
-        if self.request_user.role == 'ADMIN' or self.request_user.is_superuser:
+        if self.request_user.role == 'SUPERUSER' or self.request_user.is_superuser:
             if not is_admin:
                 manager = self.data.get('has_manager_access', False)
                 staff = self.data.get('has_staff_access', False)

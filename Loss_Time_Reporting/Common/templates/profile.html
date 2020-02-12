@@ -21,26 +21,29 @@
       <div class="card-body">
         <div class="row">
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
+            <div class="img-profile">
+                {% if user_obj.profile_pic %}
+                <img class="img-thumbnail border border-primary" src="{{ user_obj.profile_pic.url }}" width="225px"/>
+                {% else %}
+                <img class="img-thumbnail border border-primary" src="{% static 'img/img-logo1.jpg' %}" width="225px"/>
+                {% endif %}
+            </div>
+          </div>
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
             <div class="form-group">
               <label for="first_name" class="col-form-label">Name</label>
               <div class="form-control">{{user_obj.first_name}} {{user_obj.last_name}}</div>
             </div>
-          </div>
-          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
             <div class="form-group">
               <label for="username" class="col-form-label">Username</label>
               <div class="form-control">{{user_obj.username}}</div>
             </div>
           </div>
-        </div>
-        <div class="row">
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
             <div class="form-group">
               <label for="username" class="col-form-label">Email Address</label>
               <div class="form-control">{{user_obj.email}}</div>
             </div>
-          </div>
-          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
             <div class="form-group">
               <label for="id_email" class="col-form-label">Permissions</label>
               <div class="form-control">
@@ -60,23 +63,6 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
-            <div class="form-data">
-              <label for="profile_pic" class="col-form-label">Picture Profile</label>
-              <div class="form-control">
-                {% if user_obj.profile_pic %}
-                {% thumbnail request.user.profile_pic "125x125" as im %}
-                <img src="{{ im.url }}">
-                {% endthumbnail %}
-                {% else %}
-                <img src="{% static 'img/img-logo1.jpg' %}"/>
-                {% endif %}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

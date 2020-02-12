@@ -70,20 +70,16 @@
             </tr>
             {% endif %}
           </thead>
-          <!--<tfoot>
-            <tr>
+          <tfoot>
+            <tr class="text-center">
               <th>ID</th>
               <th>Name</th>
               <th>Is Active</th>
+              <th>Description</th>
               <th>Actions</th>
             </tr>
-          </tfoot>-->
+          </tfoot>
           <tbody>
-            {% if per_page %}
-            {% paginate per_page locate %}
-            {% else %}
-            {% paginate 10 locate %}
-            {% endif %}
             {% for loc in locate %}
             <tr>
               <td class="text-center" scope="row">{{forloop.counter}}</td>
@@ -105,9 +101,6 @@
       {% ifequal locate|length 0  %}
       <h6 class="text-center"> No Location Found</h6>
       {% endifequal %}
-      <div class="text-center">
-        {% show_pages %}
-      </div>
     </div>
   </div>
 
@@ -147,5 +140,5 @@
 </script>
 
 <!-- Page level custom scripts -->
-<script src="/static/js/demo/datatables-demo.js"></script>
+<script src="/static/js/datatables.js"></script>
 {% endblock inline_js %}

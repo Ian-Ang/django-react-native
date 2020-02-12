@@ -114,12 +114,20 @@
             </tr>
             {% endif %}
           </thead>
+          <tfoot>
+            <tr class="text-center">
+              <th>NO</th>
+              <th>Equipment</th>
+              <th>Source</th>
+              <th>Status</th>
+              <th>Date Start</th>
+              <th>Time Start</th>
+              <th>Data End</th>
+              <th>Time End</th>
+              <th>Actions</th>
+            </tr>
+          </tfoot>
           <tbody>
-            {% if par_page%}
-            {% paginate per_page activity %}
-            {% else %}
-            {% paginate 10 activity %}
-            {% endif %}
             {% for act in activity %}
             <tr>
               <td class="text-center">{{forloop.counter}}</td>
@@ -145,9 +153,6 @@
       {% ifequal activity|length 0 %}
       <h6 class="text-center"> No Activity Found</h6>
       {% endifequal %}
-      <div class="text-center">
-        {% show_pages%}
-      </div>
     </div>
   </div>
 
@@ -186,5 +191,5 @@
 </script>
 
 <!-- Page level custom scripts -->
-<script src="/static/js/demo/datatables-demo.js"></script>
+<script src="/static/js/datatables.js"></script>
 {% endblock inline_js %}

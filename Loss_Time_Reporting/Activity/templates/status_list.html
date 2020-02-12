@@ -82,12 +82,16 @@
             </tr>
             {% endif %}
           </thead>
+          <tfoot>
+            <tr class="text-center">
+              <th>NO</th>
+              <th>Status Name</th>
+              <th>Is Active</th>
+              <th>Description</th>
+              <th>Actions</th>
+            </tr>
+          </tfoot>
           <tbody>
-            {% if par_page%}
-            {% paginate per_page status %}
-            {% else %}
-            {% paginate 10 status %}
-            {% endif %}
             {% for sts in status %}
             <tr>
               <td class="text-center">{{forloop.counter}}</td>
@@ -109,9 +113,6 @@
       {% ifequal status|length 0 %}
       <h6 class="text-center"> No Status Found</h6>
       {% endifequal %}
-      <div class="text-center">
-        {% show_pages%}
-      </div>
     </div>
   </div>
 
@@ -150,5 +151,5 @@
 </script>
 
 <!-- Page level custom scripts -->
-<script src="/static/js/demo/datatables-demo.js"></script>
+<script src="/static/js/datatables.js"></script>
 {% endblock inline_js %}

@@ -42,13 +42,13 @@ class HomeView(LoginRequiredMixin, TemplateView):
         equipment = Equipment.objects.all()
         user = User.objects.all()
         if self.request.user.role == "ADMIN" or self.request.user.is_superuser:
-            users = self.request.user.username
-        else:
-            activity = Activity.filter(Q(create_by=self.request.user.id))
-            equipment = Equipment.filter(Q(create_by=self.request.user.id))
             user = self.request.user.username
-        context["activitys"] = activity
-        context["equipments"] = equipment
+        else:
+            #activity = Activity.filter(Q(create_by=self.request.user.id))
+            #equipment = Equipment.filter(Q(create_by=self.request.user.id))
+            user = self.request.user.username
+        #context["activitys"] = activity
+        #context["equipments"] = equipment
         context["users"] = user
         return context
 
@@ -157,9 +157,9 @@ class UserListView(AdminRequiredMixin, TemplateView):
         request_post = self.request.POST
         if request_post:
             if request_post.get('username'):
-                queryset = queryset.filter(username__incotains=request_post.get('username'))
+                queryset = queryset.filter(username__icontains=request_post.get('username'))
             if request_post.get('email'):
-                queryset = queryset.filter(email__incotains=request_post.get('email'))
+                queryset = queryset.filter(email__icontains=request_post.get('email'))
             if request_post.get('role'):
                 queryset = queryset.filter(role=request_post.get('role'))
 
@@ -180,7 +180,7 @@ class UserListView(AdminRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data(**kwargs)
-        return self.render_to_string(context)
+        return self.render_to_response(context)
 
 class CreateUserView(AdminRequiredMixin, CreateView):
     model = User
@@ -229,7 +229,7 @@ class UserDetailView(AdminRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
-        user_obj = self.objects
+        user_obj = self.object
         user_data = []
         for each in User.objects.all():
             assigned_dict = {}
@@ -258,13 +258,13 @@ class UpdateUserView(LoginRequiredMixin, UpdateView):
             user.is_superuser = False
         user.save()
 
-        if self.request.POST.getlist('teams'):
-            user_teams = user.user_teams.all()
-            for user_team in user_teams :
-                user_team.users.remove(user)
-            for team in self.request.POST.getlist('teams'):
-                team_obj = Team.objects.filter(id=team).first()
-                team_obj.users.add(user)
+        #if self.request.POST.getlist('teams'):
+            #user_teams = user.user_teams.all()
+            #for user_team in user_teams :
+            #    user_team.users.remove(user)
+            #for team in self.request.POST.getlist('teams'):
+            #    team_obj = Team.objects.filter(id=team).first()
+            #    team_obj.users.add(user)
         if (self.request.user.role == "ADMIN" and self.request.user.is_superuser):
             if self.request.is_ajax():
                 data = {"success_url": reverse_lazy('Common:user_list'), 'error':False}
@@ -295,19 +295,18 @@ class UpdateUserView(LoginRequiredMixin, UpdateView):
         user_profile_name = user_profile_name[-1]
         context["user_profile_name"] = user_profile_name
         context["user_form"] = context["form"]
-        context["teams"] = Teams.objects.all()
+        #context["teams"] = Teams.objects.all()
         if "errors" in kwargs:
             context["errors"] = kwargs["errors"]
         return context
 
 class UserDeleteView(AdminRequiredMixin, DeleteView):
     model = User
-
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        current_site = request.get_host()
-        delete_by = self.request.user.email
-        send_email_user_delete.delay(self.object.email, delete_by=delete_by, domain=current_site, protocol=request.scheme)
+        #current_site = request.get_host()
+        #delete_by = self.request.user.email
+        #send_email_user_delete.delay(self.object.email, delete_by=delete_by, domain=current_site, protocol=request.scheme)
         self.object.delete()
         return redirect("Common:user_list")
 

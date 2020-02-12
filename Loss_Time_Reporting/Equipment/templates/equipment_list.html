@@ -84,12 +84,17 @@
             </tr>
             {% endif %}
           </thead>
+          <tfoot>
+            <tr class="text-center">
+              <th>ID</th>
+              <th>Location</th>
+              <th>Equipment</th>
+              <th>QR Code</th>
+              <th>Is Active</th>
+              <th>Actions</th>
+            </tr>
+          </tfoot>
           <tbody>
-            {% if per_page %}
-            {% paginate per_page equipment %}
-            {% else %}
-            {% paginate 10 equipment %}
-            {% endif %}
             {% for equip in equipment %}
             <tr>
               <td class="text-center" scope="row">{{forloop.counter}}</td>
@@ -112,9 +117,6 @@
       {% ifequal equipment|length 0  %}
       <h6 class="text-center"> No Equipment Found</h6>
       {% endifequal %}
-      <div class="text-center">
-        {% show_pages %}
-      </div>
     </div>
   </div>
 
@@ -154,6 +156,6 @@
 </script>
 
 <!-- Page level custom scripts -->
-<script src="/static/js/demo/datatables-demo.js"></script>
+<script src="/static/js/datatables.js"></script>
 
 {% endblock inline_js %}
