@@ -64,7 +64,8 @@ def Equipment_Create(request):
             equipment = form.save(commit=False)
             equipment.created_by = request.user
             equipment.save()
-            return redirect('Equipment:Equipment_List')
+            success_url = reverse('Equipment:Equipment_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -109,7 +110,8 @@ def Equipment_Edit(request, equipment_id):
             equipment.updated_on = datetime.today()
             equipment.updated_by = request.user
             equipment.save()
-            return redirect('Equipment:Equipment_List')
+            success_url = reverse('Equipment:Equipment_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -176,7 +178,8 @@ def Locate_Create(request):
             locate = form.save(commit=False)
             locate.created_by = request.user
             locate.save()
-            return redirect('Equipment:Locate_List')
+            success_url = reverse('Equipment:Locate_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'errors': form.errors})
 
@@ -223,7 +226,8 @@ def Locate_Edit(request, locate_id):
             locate.updated_on = datetime.today()
             locate.updated_by = request.user
             locate.save()
-            return redirect('Equipment:Locate_List')
+            success_url = reverse('Equipment:Locate_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'errors': form.errors})
 

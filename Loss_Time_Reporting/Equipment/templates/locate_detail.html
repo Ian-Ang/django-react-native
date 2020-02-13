@@ -15,76 +15,65 @@
       </div>
       <div class="card-body">
         <div class="row">
-          {% if locate.id %}
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="id" class="col col-form-label">ID</label>
-              <div class="form-control">{{locate.id}}</div>
+              <label for="id" class="col-form-label font-weight-bold">ID Location</label>
+              <input type="text" class="form-control" value="{{locate.id}}" readonly="readonly"/>
             </div>
           </div>
-          {% endif %}
-          {% if locate.name %}
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="id" class="col col-form-label">Name</label>
-              <div class="form-control">{{locate.name}}</div>
+              <label for="id" class="col-form-label font-weight-bold">Name</label>
+              <input type="text" class="form-control" value="{{locate.name}}" readonly="readonly"/>
             </div>
           </div>
-          {% endif %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="id" class="col-form-label font-weight-bold">Created On</label>
+              <input type="text" class="form-control" value="{{locate.created_on}}" readonly="readonly"/>
+            </div>
+          </div>
         </div>
         <div class="row">
-          {% if locate.is_active %}
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="id" class="col col-form-label">Is Active</label>
-              <div class="form-control">{{locate.is_active}}</div>
+              <label for="id" class="col-form-label font-weight-bold">Update On</label>
+              <input type="text" class="form-control" value="{{locate.updated_on}}" readonly="readonly"/>
             </div>
           </div>
-          {% endif %}
-          {% if locate.description %}
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="id" class="col col-form-label">Description</label>
-              <div class="form-control">{{locate.description}}</div>
+              <label for="id" class="col-form-label font-weight-bold">Created By</label>
+              <input type="text" class="form-control" value="{{locate.created_by}}" readonly="readonly"/>
             </div>
           </div>
-          {% endif %}
+          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+            <div class="form-group">
+              <label for="id" class="col-form-label font-weight-bold">Update By</label>
+              <input type="text" class="form-control" value="{{locate.updated_by}}" readonly="readonly"/>
+            </div>
+          </div>
         </div>
         <div class="row">
-          {% if locate.created_on %}
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="id" class="col col-form-label">Created On</label>
-              <div class="form-control">{{locate.created_on}}</div>
+              <label for="id" class="col-form-label font-weight-bold">Is Active</label>
+              <input type="checkbox" class="form-control"
+              {% if locate.is_active == True %}
+              checked="checked"
+              {% else %}
+
+              {% endif %}
+              disabled="disabled" readonly="readonly"/>
             </div>
           </div>
-          {% endif %}
-          {% if locate.updated_on %}
-          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="col-12 col-sm-12 col-md-6 col-lg-8 ml-auto mr-auto">
             <div class="form-group">
-              <label for="id" class="col col-form-label">Update On</label>
-              <div class="form-control">{{locate.updated_on}}</div>
+              <label for="id" class="col-form-label font-weight-bold">Description</label>
+              <textarea class="form-control" name="description" rows="3" cols="100" readonly="readonly">{{locate.description}}</textarea>
             </div>
           </div>
-          {% endif %}
         </div>
-        <div class="row">
-          {% if locate.created_by%}
-          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
-            <div class="form-group">
-              <label for="id" class="col col-form-label">Created By</label>
-              <div class="form-control">{{locate.created_by}}</div>
-            </div>
-          </div>
-          {% endif %}
-          {% if locate.updated_by %}
-          <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
-            <div class="form-group">
-              <label for="id" class="col col-form-label">Update By</label>
-              <div class="form-control">{{locate.updated_by}}</div>
-            </div>
-          </div>
-          {% endif %}
       </div>
   </div>
 </div>

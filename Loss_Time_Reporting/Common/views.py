@@ -50,6 +50,8 @@ class HomeView(LoginRequiredMixin, TemplateView):
         #context["activitys"] = activity
         #context["equipments"] = equipment
         context["users"] = user
+        context["activity_count"] = activity.count()
+        context["equipment"] = equipment.count()
         return context
 
 
@@ -174,7 +176,7 @@ class UserListView(AdminRequiredMixin, TemplateView):
         context["inactive_users"] = inactive_users
         context["per_page"] = self.request.POST.get('per_page')
         context['today'] = today
-        #context['admin_email'] = settings.ADMIN_EMAIL
+        context['admin_email'] = settings.ADMIN_EMAIL
         context['role'] = ROLES
         return context
 
@@ -315,3 +317,12 @@ class PasswordResetView(PasswordResetView):
     form_class = PasswordResetEmailForm
     email_template_name = 'registration/password_reset_email.html'
     html_email_template_name = 'registration/password_reset_email.html'
+
+def Change_User_Status(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    if user.is_active:
+        user.is_active =False
+    else:
+        user.is_active = True
+    user.save()
+    return HttpResponseRedirect('/user/list/')

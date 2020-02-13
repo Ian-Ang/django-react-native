@@ -21,7 +21,7 @@
         <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
           <div class="form-group">
-            <label for="first_name" class="col-form-label">First Name {% if user_form.first_name.field.required %}<span style="color:#f00; font-size: 1rem;"
+            <label for="first_name" class="col-form-label font-weight-bold">First Name {% if user_form.first_name.field.required %}<span style="color:#f00; font-size: 1rem;"
                 class="error">*</span>{% endif %}</label>
             <input type="text" class="form-control" name="first_name"
                 value="{% if user_obj %}{{ user_obj.first_name }}{% else %}{{ request.POST.first_name }}{% endif %}"
@@ -31,7 +31,7 @@
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
           <div class="form-group">
-            <label for="last_name" class="col-form-label">Last Name {% if user_form.last_name.field.required %}<span style="color:#f00; font-size: 1rem;"
+            <label for="last_name" class="col-form-label font-weight-bold">Last Name {% if user_form.last_name.field.required %}<span style="color:#f00; font-size: 1rem;"
                 class="error">*</span>{% endif %}</label>
             <input type="text" class="form-control" name="last_name"
                 value="{% if user_obj %}{{ user_obj.last_name }}{% else %}{{ request.POST.last_name }}{% endif %}"
@@ -43,7 +43,7 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="username" class="col-form-label">Username {% if user_form.username.field.required %}<span style="color:#f00; font-size: 1rem;"
+              <label for="username" class="col-form-label font-weight-bold">Username {% if user_form.username.field.required %}<span style="color:#f00; font-size: 1rem;"
                   class="error">*</span>{% endif %}</label>
               <input type="text" class="form-control" name="username"
                   value="{% if user_obj %}{{ user_obj.username }}{% else %}{{ request.POST.username }}{% endif %}"
@@ -53,7 +53,7 @@
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="email" class="col-form-label">Email Address {% if user_form.email.field.required %}<span style="color:#f00; font-size: 1rem;"
+              <label for="email" class="col-form-label font-weight-bold">Email Address {% if user_form.email.field.required %}<span style="color:#f00; font-size: 1rem;"
                   class="error">*</span>{% endif %}</label>
               <input type="email" class="form-control" name="email"
                   value="{% if user_obj %}{{ user_obj.email }}{% else %}{{ request.POST.email }}{% endif %}"
@@ -67,7 +67,7 @@
             {% if request.user.role != 'ADMIN' and not request.user.is_superuser or request.user.id == user_obj.id %} style="display:none;"
             {% endif %}>
             <div class="form-group">
-              <label for="role" class="col-form-label">User Role {% if user_form.role.field.required %}<span style="color:#f00; font-size: 1rem;"
+              <label for="role" class="col-form-label font-weight-bold">User Role {% if user_form.role.field.required %}<span style="color:#f00; font-size: 1rem;"
                   class="error">*</span>{% endif %}</label>
                   {% if request.user.role == 'ADMIN' or request.user.is_superuser %}
                   <select name="role" class="form-control" id="user_role">
@@ -87,7 +87,7 @@
           {% if not user_obj %}
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="password" class="col-form-label"> Password {% if user_form.password.field.required %}<span style="color:#f00; font-size: 1rem;"
+              <label for="password" class="col-form-label font-weight-bold"> Password {% if user_form.password.field.required %}<span style="color:#f00; font-size: 1rem;"
                   class="error">*</span>{% endif %}</label>
               <input type="password" class="form-control" name="password"
                   value="{{ request.POST.password }}"
@@ -100,7 +100,7 @@
         <div class="row">
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="Profile Picture" class="col-form-label">Upload Profile Picture {% if user_form.profile_pic.field.required %}<span style="color:#f00; font-size: 1rem;"
+              <label for="Profile Picture" class="col-form-label font-weight-bold">Upload Profile Picture {% if user_form.profile_pic.field.required %}<span style="color:#f00; font-size: 1rem;"
                   class="error">*</span>{% endif %}</label>
               <input type="file" name="profile_pic" accept="image/*" class="form-control">
             </div>
@@ -110,22 +110,22 @@
           {% if request.user.is_superuser or request.user.role == 'ADMIN' %}
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
-              <label for="permission">Permissions <span style="color:#f00; font-size: 1rem;" class="error">*</span></label>
+              <label for="permission" class="font-weight-bold">Permissions <span style="color:#f00; font-size: 1rem;" class="error">*</span></label>
               <br>
               <div class="btn-group">
-                <label class="btn "> Manager
+                <label class="btn font-weight-bold"> Manager
                   <input type="checkbox" name="has_manager_access" id="has_manager_access_" autocomplete="off"
                     {% if user_obj.has_manager_access %} checked {% endif %}
                     {% if user_obj.is_superuser or user_obj.role == 'ADMIN' %} disabled="disabled" readonly="readonly"
                     checked="checked" {% endif %}>
                 </label>
-                <label class="btn "> Supervisor
+                <label class="btn font-weight-bold"> Supervisor
                   <input type="checkbox" name="has_supervisor_access" id="has_supervisor_access_" autocomplete="off"
                     {% if user_obj.has_supervisor_access %} checked {% endif %}
                     {% if user_obj.is_superuser or user_obj.role == 'ADMIN' %} disabled="disabled" readonly="readonly"
                     checked="checked" {% endif %}>
                 </label>
-                <label class="btn "> Staff
+                <label class="btn font-weight-bold"> Staff
                   <input type="checkbox" name="has_staff_access" id="has_staff_access_" autocomplete="off"
                     {% if user_obj.has_staff_access %} checked {% endif %}
                     {% if user_obj.is_superuser or user_obj.role == 'ADMIN' %} disabled="disabled" readonly="readonly"

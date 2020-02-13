@@ -145,7 +145,7 @@
                       <a {% if user.is_active %}
                         onclick="return confirm('Are you sure you want to deactivate this user?')" {% else %}
                         onclick="return confirm('Are you sure you want to activate this user?')" {% endif %}
-                        href="#" class="on_off"
+                        href="{% url 'Common:change_user_status' pk=user.id %}" class="on_off"
                         style="color: #454545; text-decoration: none;">
                         {% if user.is_active == True %}
                         <i class="fa fa-toggle-on"></i> Active
@@ -245,7 +245,7 @@
                       <a {% if user.is_active %}
                         onclick="return confirm('Are you sure you want to deactivate this user?')" {% else %}
                         onclick="return confirm('Are you sure you want to activate this user?')" {% endif %}
-                        href="#" class="on_off"
+                        href="{% url 'Common:change_user_status' pk=user.id %}" class="on_off"
                         style="color: #454545; text-decoration: none;">
                         {% if user.is_active == True %}
                         <i class="fa fa-toggle-on"></i> Active
@@ -258,9 +258,14 @@
                       {% endifnotequal %}
                     </td>
                     <td class="actions">
+                      {% if user.email != admin_email or request.user.email == admin_email %}
                       <a href="{% url 'Common:update' user.id %}" class="btn btn-success edit"><i class="fas fa-pencil-alt"></i></a>
-                      <a href="{% url 'Common:delete' user.id %}" class="btn btn-danger delete remove_document"><i class="fas fa-trash-alt"></i></a>
+                      {% endif%}
+                      <a href="{% url 'Common:delete' user.id %}" class="btn btn-danger delete remove_document"
+                      {% if request.user.email == user.email %} style="visibility:hidden;" {% endif%}><i class="fas fa-trash-alt"></i></a>
+                      {% if user.email != admin_email and request.user != user %}
                       <a href="#" class="btn btn-info edit fas fa-road" ><i class="fas fa-undo"></i><i class="fas fa-lock"></i></a>
+                      {% endif %}
                     </td>
                   </tr>
                   {% endfor %}

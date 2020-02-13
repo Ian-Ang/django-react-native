@@ -1,5 +1,5 @@
 from django.urls import path
-from Common.views import (HomeView, LoginView, LogoutView, UserListView, CreateUserView, ProfileView, UserDeleteView, UserDetailView, UpdateUserView)
+from Common.views import (HomeView, LoginView, LogoutView, UserListView, CreateUserView, ProfileView, UserDeleteView, UserDetailView, UpdateUserView, Change_User_Status)
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -14,4 +14,5 @@ urlpatterns = [
     path('user/<int:pk>/edit/', UpdateUserView.as_view(), name='update'),
     path('user/<int:pk>/view/', UserDetailView.as_view(), name='detail'),
     path('user/<int:pk>/delete/', UserDeleteView.as_view(), name='delete'),
+    path('user/status/<int:pk>/', Change_User_Status, name='change_user_status')
 ]

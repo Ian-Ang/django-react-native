@@ -72,7 +72,8 @@ def Activity_Create(request):
             activity = form.save(commit=False)
             activity.created_by = request.user
             activity.save()
-            return redirect('Activity:Activity_List')
+            success_url = reverse('Activity:Activity_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -119,7 +120,8 @@ def Activity_Edit(request, activity_id):
             activity.updated_on = datetime.today()
             activity.updated_by = request.user
             activity.save()
-            return redirect('Activity:Activity_List')
+            success_url = reverse('Activity:Activity_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -185,7 +187,8 @@ def Status_Create(request):
             status = form.save(commit=False)
             status.created_by = request.user
             status.save()
-            return redirect('Activity:Status_List')
+            success_url = reverse('Activity:Status_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 
@@ -232,7 +235,8 @@ def Status_Edit(request, status_id):
             status.updated_on = datetime.today()
             status.updated_by = request.user
             status.save()
-            return redirect('Activity:Status_List')
+            success_url = reverse('Activity:Status_List')
+            return JsonResponse({'error':False, 'success_url':success_url})
         else:
             return JsonResponse({'error':True, 'errors': form.errors})
 

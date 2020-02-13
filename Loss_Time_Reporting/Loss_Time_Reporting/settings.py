@@ -148,3 +148,5 @@ REST_FRAMEWORK = {
             'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ]
 }
+
+ADMIN_EMAIL = "ian.anggara91@gmail.com"

@@ -23,7 +23,7 @@ class EquipmentForm(forms.ModelForm):
         self.fields['locate_id'].required = True
         self.fields['name'].required = True
         self.fields['qr_code'].required = True
-        self.fields['is_active'].required = True
+        self.fields['is_active'].required = False
         self.fields['description'].required = False
 
     def clean_name(self):
@@ -52,7 +52,7 @@ class LocateForm(forms.ModelForm):
             field.widget.attrs = {"class":"form-control"}
 
         self.fields['name'].required = True
-        self.fields['is_active'].required = True
+        self.fields['is_active'].required = False
         self.fields['description'].required = True
 
     class Meta:

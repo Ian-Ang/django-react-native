@@ -84,7 +84,7 @@
             <tr>
               <td class="text-center" scope="row">{{forloop.counter}}</td>
               <td>{{ loc.name}}</td>
-              <td>{{ loc.is_active}}</td>
+              <td class="text-center">{{ loc.is_active}}</td>
               <td>{{ loc.description}}</td>
               <td class="actions text-center">
                 {% if request.user == equip.created_by or request.user.role == 'ADMIN' %}
