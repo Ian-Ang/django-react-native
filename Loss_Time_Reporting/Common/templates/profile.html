@@ -23,9 +23,11 @@
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
             <div class="img-profile text-center">
                 {% if user_obj.profile_pic %}
-                <img class="img-thumbnail border border-primary" src="{{ user_obj.profile_pic.url }}" width="200px"/>
+
+                <img class="img-thumbnail border border-primary" src="{{ user_obj.profile_pic.url }}" width="215px"/>
+
                 {% else %}
-                <img class="img-thumbnail border border-primary" src="{% static 'img/img-logo1.jpg' %}" width="200px"/>
+                <img class="img-thumbnail border border-primary" src="{% static 'img/img-logo1.jpg' %}" width="215px"/>
                 {% endif %}
             </div>
           </div>

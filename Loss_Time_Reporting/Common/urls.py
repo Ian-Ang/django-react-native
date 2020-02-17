@@ -15,4 +15,4 @@ urlpatterns = [
     path('user/<int:pk>/view/', UserDetailView.as_view(), name='detail'),
     path('user/<int:pk>/delete/', UserDeleteView.as_view(), name='delete'),
     path('user/status/<int:pk>/', Change_User_Status, name='change_user_status')
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

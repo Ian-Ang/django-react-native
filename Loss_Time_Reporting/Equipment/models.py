@@ -16,6 +16,7 @@ class Locate(models.Model):
 
     no = models.IntegerField(_('Code'), default=ids, unique=True, editable=False)
     id = models.CharField(max_length=30, unique=True, primary_key=True, null=False, editable=False)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.SET_NULL)
     name = models.CharField(max_length=50, null=False)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True, max_length=255)
@@ -65,3 +66,23 @@ class Equipment(models.Model):
         if not self.id:
             self.id = "{}{:08d}".format('EQP', self.no)
         super().save(*kwargs)
+
+#class Spesifikasi(models.Model):
+#    def ids():
+#        no - Spesifikasi.objects.count()
+#        if no == None:
+#            return 1
+#        else :
+#            return no + 1
+
+#    no = models.IntegerField(_('Code'), default=ids, unique=True, editable=False)
+#    id = models.CharField(max_length = 50, unique=True, primary_key=True, null=False, editable=False)
+#    name = models.CharField(_('Spesifikasi 1'), max_length=100, null:False)
+
+#    def __str__(self):
+#        return self.name
+
+#    def save(self, **kwargs):
+#        if not self.id:
+#            self.id = "{}{:05d}".format('SPEK', self.no)
+#        super().save(*kwargs)
