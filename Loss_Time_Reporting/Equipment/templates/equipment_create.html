@@ -21,14 +21,93 @@
         <div class="row">
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
           <div class="form-group">
-            <label for="name" class="col-form-label font-weight-bold">Equipment</label>
-            <div>{{ form.name}}</div>
+            <label for="name" class="col-form-label font-weight-bold">Name</label>
+            <div>
+              <input type="text" class="form-control" name="name"
+              value="{% if equipment_obj %}{{ equipment_obj.name }}{% else %}{{ request.POST.name }}{% endif %}"
+              placeholder="Equipment Name" maxlength="30">
+            </div>
           </div>
         </div>
         <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
           <div class="form-group">
-            <label for="name" class="col-form-label font-weight-bold">Location</label>
-            <div>{{ form.locate_id}}</div>
+            <label for="locate_id" class="col-form-label font-weight-bold">Location</label>
+            <div>{{form.locate_id}}</div>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="model" class="col-form-label font-weight-bold">Model</label>
+            <div>
+              <input type="text" class="form-control" name="model"
+              value="{% if equipment_obj %}{{ equipment_obj.model }}{% else %}{{ request.POST.model}}{% endif %}"
+              placeholder="Model" maxlength="30">
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="type" class="col-form-label font-weight-bold">Type</label>
+            <div>
+              <input type="text" class="form-control" name="type"
+              value="{% if equipment_obj %}{{ equipment_obj.type }}{% else %}{{ request.POST.type }}{% endif %}"
+              placeholder="Type" maxlength="30">
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="merek" class="col-form-label font-weight-bold">Merek</label>
+            <div>
+              <input type="text" class="form-control" name="merek"
+              value="{% if equipment_obj %}{{ equipment_obj.merek }}{% else %}{{ request.POST.merek }}{% endif %}"
+              placeholder="Merek" maxlength="30">
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="panjang" class="col-form-label font-weight-bold">Panjang</label>
+            <div class="input-group">
+              <input type="number" class="form-control" name="panjang" step="0.01" min="0" max="10000"
+              value="{%if equipment_obj%}{{equipment_obj.panjang}}{% else %}{{ request.POST.panjang }}{%endif%}"
+              placeholder="1.0">
+              <div class="input-group-append">
+                <div class="input-group-text">CM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="lebar" class="col-form-label font-weight-bold">Lebar</label>
+            <div class="input-group">
+              <input type="number" class="form-control" name="lebar" step="0.01" min="0" max="10000"
+              value="{%if equipment_obj%}{{equipment_obj.lebar}}{% else %}{{request.POST.lebar}}{%endif%}"
+              placeholder="1.0">
+              <div class="input-group-append">
+                <div class="input-group-text">CM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
+          <div class="form-group">
+            <label for="tinggi" class="col-form-label font-weight-bold">Tinggi</label>
+            <div class="input-group">
+              <input type="number" class="form-control" name="tinggi" step="0.01" min="0" max="10000"
+              value="{%if equipment_obj%}{{equipment_obj.tinggi}}{% else %}{{request.POST.tinggi}}{%endif%}"
+              placeholder="1.0">
+              <div class="input-group-append">
+                <div class="input-group-text">CM</div>
+              </div>
+            </div>
           </div>
         </div>
         </div>
@@ -36,13 +115,17 @@
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
               <label for="name" class="col-form-label font-weight-bold">QR Code</label>
-              <div>{{ form.qr_code}}</div>
+              <div>
+                <input type="text" class="form-control" name="qr_code"
+                value="{% if equipment_obj %}{{ equipment_obj.qr_code }}{% else %}{{ request.POST.qr_code }}{% endif %}"
+                placeholder="QR Code" maxlength="12">
+              </div>
             </div>
           </div>
           <div class="col-12 col-sm-12 col-md-6 col-lg-4 ml-auto mr-auto">
             <div class="form-group">
               <label for="name" class="col-form-label font-weight-bold">Is Active</label>
-              <div class="col">{{ form.is_active}}</div>
+              <div>{{form.is_active}}</div>
             </div>
           </div>
         </div>
@@ -50,7 +133,10 @@
           <div class="col-12 col-sm-12 col-md-6 col-lg-10 ml-auto mr-auto">
             <div class="form-group">
               <label for="name" class="col-form-label font-weight-bold">Description</label>
-              <div class="col">{{ form.description}}</div>
+              <div>
+                <textarea name="description" cols="40" rows="3" placeholder="Please your input description"
+                class="form-control">{% if equipment_obj%}{{equipment_obj.description}}{% else %}{{request.POST.description}}{%endif%}</textarea>
+              </div>
             </div>
           </div>
         </div>

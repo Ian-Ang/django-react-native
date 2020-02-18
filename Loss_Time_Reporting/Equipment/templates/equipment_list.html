@@ -76,10 +76,11 @@
             {% if equipment|length > 0 %}
             <tr class="text-center">
               <th>ID</th>
-              <th>Location</th>
               <th>Equipment</th>
-              <th>QR Code</th>
-              <th>Is Active</th>
+              <th>Location</th>
+              <th>Model</th>
+              <th>Type</th>
+              <th>Merek</th>
               <th>Actions</th>
             </tr>
             {% endif %}
@@ -87,10 +88,11 @@
           <tfoot>
             <tr class="text-center">
               <th>ID</th>
-              <th>Location</th>
               <th>Equipment</th>
-              <th>QR Code</th>
-              <th>Is Active</th>
+              <th>Location</th>
+              <th>Model</th>
+              <th>Type</th>
+              <th>Merek</th>
               <th>Actions</th>
             </tr>
           </tfoot>
@@ -98,10 +100,11 @@
             {% for equip in equipment %}
             <tr>
               <td class="text-center" scope="row">{{forloop.counter}}</td>
-              <td>{{ equip.locate_id}}</td>
               <td>{{ equip.name}}</td>
-              <td>{{ equip.qr_code}}</td>
-              <td class="text-center">{{ equip.is_active}}</td>
+              <td>{{ equip.locate_id}}</td>
+              <td>{{ equip.model}}</td>
+              <td>{{ equip.type}}</td>
+              <td>{{ equip.merek}}</td>
               <td class="actions text-center">
                 {% if request.user == equip.created_by or request.user.role == 'ADMIN' %}
                 <a href="{% url 'Equipment:Equipment_Detail' equip.id %}" class="btn btn-info edit"><i class="fas fa-eye"></i></a>

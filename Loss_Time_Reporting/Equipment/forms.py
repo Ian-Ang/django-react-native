@@ -20,9 +20,15 @@ class EquipmentForm(forms.ModelForm):
         if request_user.role == 'USER':
             self.fields["locate_id"].queryset = Locate.objects.filter(Q(created_by=request_user) | Q(is_active=True))
 
-        self.fields['locate_id'].required = True
         self.fields['name'].required = True
-        self.fields['qr_code'].required = True
+        self.fields['locate_id'].required = True
+        self.fields['model'].required = False
+        self.fields['type'].required = False
+        self.fields['merek'].required = True
+        self.fields['panjang'].required = False
+        self.fields['lebar'].required = False
+        self.fields['tinggi'].required = False
+        self.fields['qr_code'].required = False
         self.fields['is_active'].required = False
         self.fields['description'].required = False
 
@@ -39,7 +45,7 @@ class EquipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        fields = ('locate_id','name','qr_code','is_active','description')
+        fields = ('locate_id','name','qr_code','is_active','description','model','type','panjang','lebar','tinggi','merek')
 
 
 class LocateForm(forms.ModelForm):
@@ -52,9 +58,10 @@ class LocateForm(forms.ModelForm):
             field.widget.attrs = {"class":"form-control"}
 
         self.fields['name'].required = True
+        self.fields['parent'].required = False
         self.fields['is_active'].required = False
-        self.fields['description'].required = True
+        self.fields['description'].required = False
 
     class Meta:
         model = Locate
-        fields = ('name', 'is_active', 'description')
+        fields = ('name', 'parent', 'is_active', 'description')
