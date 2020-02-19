@@ -6,6 +6,11 @@ from django.utils.translation import ugettext_lazy as _
 from Common.models import User
 
 # Create your models here.
+def img_url(self, filename):
+    hash_ = int(time.time())
+    return "%s/%s/%s" % ("eqp_img_pics", hash_, filename)
+
+
 class Locate(models.Model):
     def ids():
         no = Locate.objects.count()
@@ -55,6 +60,9 @@ class Equipment(models.Model):
     panjang = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     lebar = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     tinggi = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    supliyer = models.CharField(max_length=100, null=True)
+    date_purchase = models.DateField(auto_now_add=False, null=True)
+    eqp_img_pic = models.FileField(_('Equipment Picture'), max_length=1000, upload_to=img_url, null=True, blank=True)
     description = models.TextField(blank=True, max_length=255)
     created_on = models.DateTimeField(_('Created on'), auto_now_add=True)
     updated_on = models.DateTimeField(_('Updated on'), auto_now_add=False, blank=True, null=True)
@@ -83,11 +91,34 @@ class Spesifikasi(models.Model):
 
     no = models.IntegerField(_('Code'), default=ids, unique=True, editable=False)
     id = models.CharField(max_length = 50, unique=True, primary_key=True, null=False, editable=False)
+    eqp_ids = models.ForeignKey('Equipment', on_delete=models.SET_NULL, null=True)
+    s1 = models.CharField(_('Spesifikasi 1'), max_length=100, null=True)
+    vs1 = models.CharField(_('Value 1'), max_length=100, null=True)
+    s2 = models.CharField(_('Spesifikasi 2'), max_length=100, null=True)
+    vs2 = models.CharField(_('Value 2'), max_length=100, null=True)
+    s3 = models.CharField(_('Spesifikasi 3'), max_length=100, null=True)
+    vs3 = models.CharField(_('Value 3'), max_length=100, null=True)
+    s4 = models.CharField(_('Spesifikasi 4'), max_length=100, null=True)
+    vs4 = models.CharField(_('Value 4'), max_length=100, null=True)
+    s5 = models.CharField(_('Spesifikasi 5'), max_length=100, null=True)
+    vs5 = models.CharField(_('Value 5'), max_length=100, null=True)
+    s6 = models.CharField(_('Spesifikasi 6'), max_length=100, null=True)
+    vs6 = models.CharField(_('Value 6'), max_length=100, null=True)
+    s7 = models.CharField(_('Spesifikasi 7'), max_length=100, null=True)
+    vs7 = models.CharField(_('Value 7'), max_length=100, null=True)
+    s8 = models.CharField(_('Spesifikasi 8'), max_length=100, null=True)
+    vs8 = models.CharField(_('Value 8'), max_length=100, null=True)
+    s9 = models.CharField(_('Spesifikasi 9'), max_length=100, null=True)
+    vs9 = models.CharField(_('Value 9'), max_length=100, null=True)
+    s10 = models.CharField(_('Spesifikasi 10'), max_length=100, null=True)
+    vs10 = models.CharField(_('Value 10'), max_length=100, null=True)
+    s11 = models.CharField(_('Spesifikasi 11'), max_length=100, null=True)
+    vs11 = models.CharField(_('Value 11'), max_length=100, null=True)
+    s12 = models.CharField(_('Spesifikasi 12'), max_length=100, null=True)
+    vs12 = models.CharField(_('Value 12'), max_length=100, null=True)
 
-#    name = models.CharField(_('Spesifikasi 1'), max_length=100, null:False)
-#
-#    def __str__(self):
-#        return self.name
+    def __str__(self):
+        return self.id
 
     def save(self, **kwargs):
         if not self.id:

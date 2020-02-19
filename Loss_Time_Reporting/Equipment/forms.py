@@ -28,6 +28,9 @@ class EquipmentForm(forms.ModelForm):
         self.fields['panjang'].required = False
         self.fields['lebar'].required = False
         self.fields['tinggi'].required = False
+        self.fields['supliyer'].required = False
+        self.fields['date_purchase'].required = False
+        self.fields['eqp_img_pic'].required = False
         self.fields['qr_code'].required = False
         self.fields['is_active'].required = False
         self.fields['description'].required = False
@@ -45,7 +48,7 @@ class EquipmentForm(forms.ModelForm):
 
     class Meta:
         model = Equipment
-        fields = ('locate_id','name','qr_code','is_active','description','model','type','panjang','lebar','tinggi','merek')
+        fields = ('locate_id','name','qr_code','is_active','description','model','type','panjang','lebar','tinggi','merek','date_purchase','eqp_img_pic','supliyer')
 
 
 class LocateForm(forms.ModelForm):
