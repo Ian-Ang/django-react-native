@@ -93,6 +93,7 @@
 {% block inline_js %}
 <script type="text/javascript">
   $('#id_start_date').datepicker({
+    format: 'yyyy-mm-dd',
     uiLibrary: 'bootstrap'
   });
   $('#id_start_time').timepicker({
@@ -100,6 +101,7 @@
   });
 
   $('#id_end_date').datepicker({
+    format: 'yyyy-mm-dd',
     uiLibrary: 'bootstrap'
   });
   $('#id_end_time').timepicker({
