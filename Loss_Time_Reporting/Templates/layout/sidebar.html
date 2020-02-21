@@ -35,8 +35,8 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">Equipment Manajement :</h6>
-        <a class="collapse-item" href="{% url 'Equipment:Equipment_List' %}">Equipments </a>
-        <a class="collapse-item" href="{% url 'Equipment:Locate_List' %}">Locations</a>
+        <a class="collapse-item" href="{% url 'Equipment:Equipment_List' %}">Equipments List </a>
+        <a class="collapse-item" href="{% url 'Equipment:Locate_List' %}">Functional Locations</a>
         <a class="collapse-item" href="#">Report</a>
       </div>
     </div>
@@ -53,6 +53,22 @@
         <h6 class="collapse-header">Activity Manajement:</h6>
         <a class="collapse-item" href="{% url 'Activity:Activity_List' %}">Activity</a>
         <a class="collapse-item" href="{% url 'Activity:Status_List'%}">Status</a>
+        <a class="collapse-item" href="#">Report</a>
+      </div>
+    </div>
+  </li>
+
+  <!-- Nav Item - Utilities Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSparepart" aria-expanded="true" aria-controls="collapseSparepart">
+      <i class="fas fa-fw fa-th-list"></i>
+      <span>Spare Part</span>
+    </a>
+    <div id="collapseSparepart" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Sparepart Manajement:</h6>
+        <a class="collapse-item" href="#">Item</a>
+        <a class="collapse-item" href="#">Purchase</a>
         <a class="collapse-item" href="#">Report</a>
       </div>
     </div>
