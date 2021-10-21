@@ -1,5 +1,5 @@
 arrow==0.14.2
-Babel==2.8.0
+Babel==2.9.1
 Django==2.2
 django-phone-field==1.8.0
 django-simple-pagination==1.3
